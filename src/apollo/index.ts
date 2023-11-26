@@ -1,6 +1,6 @@
-import { getMe } from "./resolvers/user/queries"
-import { register, login } from "./resolvers/user/mutations"
-import { createDesign, createComment, likeDesign } from "./resolvers/design/mutations"
+import { getMe, getFollowers, getFollowing } from "./resolvers/user/queries"
+import { register, login, follow } from "./resolvers/user/mutations"
+import { createDesign, createComment, likeDesign, saveDesign } from "./resolvers/design/mutations"
 import { getAllDesigns, getUserDesigns } from "./resolvers/design/queries"
 import { newComment, newLike } from "./resolvers/design/subscriptions"
 import { userTypeDefs } from "./resolvers/user/typeDefs"
@@ -16,6 +16,8 @@ export const resolvers = {
         getMe,
         getAllDesigns,
         getUserDesigns,
+        getFollowers,
+        getFollowing,
     },
     Mutation: {
         register,
@@ -23,6 +25,8 @@ export const resolvers = {
         createDesign,
         createComment,
         likeDesign,
+        follow,
+        saveDesign,
     },
     Subscription: {
         newComment,

@@ -3,6 +3,8 @@ import { CommentModel } from "../../../models/Comment";
 import { DesignModel } from "../../../models/Design";
 import publish from "../../../utils/pubsub";
 import { LikeModel } from "../../../models/Like";
+import { FollowModel } from "../../../models/Follow";
+import { SavedDesignModel } from "../../../models/SavedDesign";
 
 export const createDesign = async (_:any, { createDesignInput: { preview, description, designType, designFiles, tags, category } }, context:any) => {
     
@@ -60,6 +62,12 @@ export const likeDesign = async (_:any, { designId }, context:any) => {
     try {
         const user:any = Authenticate(context)
 
+        const alreadyLiked = await LikeModel.findOne({designId, likedBy: user.user._id});
+
+        if(alreadyLiked) {
+            throw new Error("You have already liked this design");
+        }
+
         const like = new LikeModel({
             likedBy: user.user._id,
             designId,
@@ -74,6 +82,30 @@ export const likeDesign = async (_:any, { designId }, context:any) => {
 
         return likeResult;
 
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const saveDesign = async (_:any, { designId }, context:any) => {
+    try {
+        const user:any = Authenticate(context)
+
+        const alreadySaved = await SavedDesignModel.findOne({design:designId, savedBy: user.user._id});
+
+        if(alreadySaved) {
+            throw new Error("You have already saved this design");
+        }
+
+        const save = new SavedDesignModel({
+            savedBy: user.user._id,
+            design: designId,
+            savedAt: new Date().toISOString(),
+        })
+
+        const saveResult = await save.save();
+
+        return saveResult;
     } catch (error) {
         console.log(error);
     }

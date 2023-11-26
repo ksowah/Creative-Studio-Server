@@ -77,6 +77,20 @@ type UserLike {
     likedAt: String!
 }
 
+type SavedDesign {
+    _id: ID!
+    design: ID!
+    savedBy: ID!
+    savedAt: String!
+}
+
+type SavedDesigns {
+    _id: ID!
+    design: Design!
+    savedBy: ID!
+    savedAt: String!
+}
+
 input CreateDesignInput {
     preview: String!
     description: String!
@@ -89,12 +103,14 @@ input CreateDesignInput {
 type Query {
     getAllDesigns: [AllDesigns!]!
     getUserDesigns(userId: String): [AllDesigns!]!
+    getSavedDesigns: [SavedDesigns!]!
 }
 
 type Mutation {
     createDesign(createDesignInput: CreateDesignInput): Design!
     createComment(designId: String!, comment: String!): Comment!
     likeDesign(designId: String!): Like!
+    saveDesign(designId: String!): SavedDesign!
 }
 
 type Subscription {

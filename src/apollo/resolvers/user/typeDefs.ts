@@ -22,6 +22,33 @@ export const userTypeDefs = gql`
     user: User!
   }
 
+  type Follow {
+    followedBy: ID!
+    followedUser: ID!
+    followedAt: String!
+  }
+
+  type UserFollow {
+    _id: ID!
+    fullName: String!
+    email: String!
+    avatar: String!
+    username: String!
+    available: Boolean!
+  }
+
+  type Followers {
+    followedBy: UserFollow!
+    followedUser: ID!
+    followedAt: String!
+  }
+
+  type Following {
+    followedBy: ID!
+    followedUser: UserFollow!
+    followedAt: String!
+  }
+
   input RegisterInput {
     fullName: String!
     email: String!
@@ -37,10 +64,13 @@ export const userTypeDefs = gql`
 
   type Query {
     getMe: GetMeUser
+    getFollowers(userId: ID!): [Followers!]!
+    getFollowing(userId: ID!): [Following!]!
   }
 
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(loginInput: LoginInput): LoginUser!
+    follow(followedUser: ID!): Follow!
   }
 `;
