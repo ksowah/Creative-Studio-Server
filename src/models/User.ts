@@ -45,15 +45,7 @@ const UserSchema = new Schema({
     },
     avatar: {
         type: String,
-    },
-    followers: {
-        type: Number,
-        default: 0
-    },
-    following: {
-        type: Number,
-        default: 0
-    },
+    }
 })
 
 export const UserModel = model("User", UserSchema);

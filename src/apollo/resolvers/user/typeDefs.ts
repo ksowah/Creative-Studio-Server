@@ -11,8 +11,6 @@ export const userTypeDefs = gql`
     userType: String!
     username: String!
     available: Boolean!
-    followers: Int!
-    following: Int!
   }
 
   type LoginUser {

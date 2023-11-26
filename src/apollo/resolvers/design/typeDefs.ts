@@ -8,18 +8,14 @@ type Designer {
     email: String!
     avatar: String!
     username: String!
-    followers: Int!
-    following: Int!
 }
 
-type User {
+type DesignUser {
     _id: ID!
     fullName: String!
     email: String!
     avatar: String!
     username: String!
-    followers: Int!
-    following: Int!
 }
 
 type Design {
@@ -54,9 +50,31 @@ type AllDesigns {
 type Comment {
     _id: ID!
     comment: String!
-    commentedBy: User!
+    commentedBy: ID!
     commentedAt: String!
     designId: String!
+}
+
+type UserComment {
+    _id: ID!
+    comment: String!
+    commentedBy: DesignUser!
+    commentedAt: String!
+    designId: String!
+}
+
+type Like {
+    _id: ID!
+    designId: ID!
+    likedBy: ID!
+    likedAt: String!
+}
+
+type UserLike {
+    _id: ID!
+    designId: ID!
+    likedBy: DesignUser!
+    likedAt: String!
 }
 
 input CreateDesignInput {
@@ -76,10 +94,12 @@ type Query {
 type Mutation {
     createDesign(createDesignInput: CreateDesignInput): Design!
     createComment(designId: String!, comment: String!): Comment!
+    likeDesign(designId: String!): Like!
 }
 
 type Subscription {
-    newComment(designId: ID!): Comment!
+    newComment(designId: ID!): UserComment!
+    newLike(designId: ID!): UserLike!
 }
 
 `;

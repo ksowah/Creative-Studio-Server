@@ -2,7 +2,7 @@ import Authenticate from "../../../middleware/auth";
 import { CommentModel } from "../../../models/Comment";
 import { DesignModel } from "../../../models/Design";
 import publish from "../../../utils/pubsub";
-
+import { LikeModel } from "../../../models/Like";
 
 export const createDesign = async (_:any, { createDesignInput: { preview, description, designType, designFiles, tags, category } }, context:any) => {
     
@@ -51,6 +51,7 @@ export const createComment = async (_:any, { designId, comment }, context:any) =
 
         return commentResult;
     } catch (error) {
+        console.log(error);
         
     }
 }
@@ -59,10 +60,21 @@ export const likeDesign = async (_:any, { designId }, context:any) => {
     try {
         const user:any = Authenticate(context)
 
-        const design = DesignModel.findByIdAndUpdate(designId, {
-            
-        })
+        const like = new LikeModel({
+            likedBy: user.user._id,
+            designId,
+            likedAt: new Date().toISOString(),
+        }) 
+
+        const likeResult = await like.save();
+
+        publish.pubsub.publish(`LIKE_DESIGN`, {
+            newLike: likeResult,
+          });
+
+        return likeResult;
+
     } catch (error) {
-        
+        console.log(error);
     }
 }
