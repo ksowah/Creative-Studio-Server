@@ -7,12 +7,10 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import MongoDB from "./config"
+import MongoDB from "./config/db"
 import {resolvers} from './apollo';
-import dotenv from 'dotenv';
 import { typeDefs } from "./apollo"
-
-dotenv.config();
+import { config } from './config';
 
 const app = express();
 
@@ -60,7 +58,7 @@ const serverCleanup = useServer({ schema }, wsServer);
   
     MongoDB();
 
-    const PORT = process.env.PORT || 4000; 
+    const PORT = config.server.port;
 
     httpServer.listen({ port: PORT }, () =>
       console.log(`Server running at http://localhost:${PORT}${server.graphqlPath}`)

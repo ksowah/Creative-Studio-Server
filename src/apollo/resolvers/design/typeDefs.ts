@@ -10,14 +10,6 @@ type Designer {
     username: String!
 }
 
-type DesignUser {
-    _id: ID!
-    fullName: String!
-    email: String!
-    avatar: String!
-    username: String!
-}
-
 type Design {
     _id: ID!
     designer: ID!
@@ -58,7 +50,7 @@ type Comment {
 type UserComment {
     _id: ID!
     comment: String!
-    commentedBy: DesignUser!
+    commentedBy: Designer!
     commentedAt: String!
     designId: String!
 }
@@ -73,8 +65,13 @@ type Like {
 type UserLike {
     _id: ID!
     designId: ID!
-    likedBy: DesignUser!
+    likedBy: Designer!
     likedAt: String!
+}
+
+type NumberOfLikes {
+    data: [UserLike!]!
+    numberOfLikes: Int!
 }
 
 type SavedDesign {
@@ -82,6 +79,7 @@ type SavedDesign {
     design: ID!
     savedBy: ID!
     savedAt: String!
+    designer: ID!
 }
 
 type SavedDesigns {
@@ -89,6 +87,7 @@ type SavedDesigns {
     design: Design!
     savedBy: ID!
     savedAt: String!
+    designer: Designer!
 }
 
 input CreateDesignInput {
@@ -102,20 +101,23 @@ input CreateDesignInput {
 
 type Query {
     getAllDesigns: [AllDesigns!]!
-    getUserDesigns(userId: String): [AllDesigns!]!
+    getUserDesigns(userId: String!): [AllDesigns!]!
     getSavedDesigns: [SavedDesigns!]!
+    getNumberOfLikes(designId: String!): NumberOfLikes!
+    searchDesigns(searchTerm: String!): [AllDesigns!]!
 }
 
 type Mutation {
     createDesign(createDesignInput: CreateDesignInput): Design!
     createComment(designId: String!, comment: String!): Comment!
     likeDesign(designId: String!): Like!
-    saveDesign(designId: String!): SavedDesign!
+    saveDesign(designId: String!, designer: String): SavedDesign!
+    unlikeDesign(designId: String!): String!
+    becomeDesigner: User!
 }
 
 type Subscription {
     newComment(designId: ID!): UserComment!
     newLike(designId: ID!): UserLike!
 }
-
 `;

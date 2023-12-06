@@ -15,6 +15,11 @@ const SavedDesignSchema = new Schema({
     ref: "Design",
     required: true,
   },
+  designer: {
+    type: SchemaTypes.ObjectId,
+    ref: "User",
+    required: true,
+  },
 }, {timestamps: true})
 
 export const SavedDesignModel = model("SavedDesign", SavedDesignSchema);

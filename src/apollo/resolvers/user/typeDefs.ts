@@ -11,7 +11,17 @@ export const userTypeDefs = gql`
     userType: String!
     username: String!
     available: Boolean!
+    subscription: String!
   }
+
+  type ClientUser {
+    _id: ID!
+    fullName: String!
+    email: String!
+    avatar: String!
+    username: String!
+    available: Boolean!
+}
 
   type LoginUser {
     user: User!
@@ -43,11 +53,21 @@ export const userTypeDefs = gql`
     followedAt: String!
   }
 
+  type FollowerCount {
+    data: [Followers!]!
+    numberOfFollowers: Int!
+  }
+
   type Following {
     followedBy: ID!
     followedUser: UserFollow!
     followedAt: String!
   }
+
+type FollowingCount {
+    data: [Following!]!
+    followingCount: Int!
+}
 
   input RegisterInput {
     fullName: String!
@@ -64,13 +84,15 @@ export const userTypeDefs = gql`
 
   type Query {
     getMe: GetMeUser
-    getFollowers(userId: ID!): [Followers!]!
-    getFollowing(userId: ID!): [Following!]!
+    getFollowers(userId: ID!): FollowerCount!
+    getFollowing(userId: ID!): FollowingCount!
   }
 
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(loginInput: LoginInput): LoginUser!
     follow(followedUser: ID!): Follow!
+    becomeCreator: User!
+    becomePremiumUser: User!
   }
 `;

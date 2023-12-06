@@ -1,9 +1,10 @@
 import bcrypt from 'bcryptjs';
 import { UserModel } from '../../../models/User';
-import { __GENERATE_TOKEN } from '../../../utils/functions';
+import { __GENERATE_TOKEN, __sendEmail } from '../../../utils/functions';
 import { User } from '../../../types';
 import Authenticate from '../../../middleware/auth';
 import { FollowModel } from '../../../models/Follow';
+import { __template } from '../../../utils/html';
 
 
 // USER REGISTRATION
@@ -27,6 +28,18 @@ export const register = async (_:any, { registerInput: { fullName, email, passwo
         });
     
         const user = await newUser.save();
+
+        if(user) {
+            await __sendEmail(
+                email,
+                __template(
+                    "Congratulations, your account has now been <strong>verified</strong>",
+                    "Sign in",
+                    "https://ksowah.netlify.app/",
+                ),
+                "Account Verification"
+            )
+        }
     
         return user;
         
@@ -83,6 +96,51 @@ export const follow = async (_:any, { followedUser }, context:any) => {
 
         return followResult;
 
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const unfollow = async (_:any, { followedUser }, context:any) => {
+    
+}
+
+export const becomePremiumUser = async (_:any, __:any, context:any) => {
+    try {
+        const user: any = Authenticate(context);
+
+        const getUserFromDB = await UserModel.findById(user.user._id)
+
+        if (getUserFromDB.subscription === "PREMIUM") {
+            throw new Error("You are already a premium user");
+        }
+
+        const updateUser = await UserModel.findByIdAndUpdate(user.user._id, {subscription: "PREMIUM"}, {new: true});
+
+        return updateUser;
+    } catch (error) {
+        console.log(error);
+    }
+
+}   
+
+export const becomeCreator = async (_:any, __:any, context:any) => {
+    try {
+        const user: any = Authenticate(context);
+
+        const getUserFromDB = await UserModel.findById(user.user._id)
+
+        if (getUserFromDB.subscription !== "PREMIUM") {
+            throw new Error("You are not a premium user");
+        }
+        
+        if (getUserFromDB.userType === "CREATOR") {
+            throw new Error("You are already a creater");
+        }
+
+        const updateUser = await UserModel.findByIdAndUpdate(user.user._id, {userType: "CREATOR"}, {new: true});
+
+        return updateUser;
     } catch (error) {
         console.log(error);
     }

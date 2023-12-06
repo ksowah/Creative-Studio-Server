@@ -14,31 +14,40 @@ export async function getMe(_: any, __: any, context: any) {
     }
 }
 
-export async function getFollowers(_: any, {userId}, context: any) {
-    try {
-        Authenticate(context)
 
-        const followers = await FollowModel.find({followedUser: userId})
+export async function getFollowers(_: any, { userId }, context: any) {
+    try {
+        Authenticate(context);
+
+        const followers = await FollowModel.find({ followedUser: userId })
         .populate({path: "followedBy", select: "-password -authType -userType"})
         .sort({createdAt: -1}).lean()
 
-        return followers;
-    } catch (err) {
-        throw new Error(err);
+        return {
+            data: followers,
+            numberOfFollowers: followers.length
+        }
+
+    } catch (error) {
+        console.log(error);
     }
 }
 
-export async function getFollowing(_: any, {userId}, context: any) {
+export async function getFollowing(_: any, { userId }, context: any) {
     try {
-        Authenticate(context)
+        Authenticate(context);
 
         const following = await FollowModel.find({followedBy: userId})
         .populate({path: "followedUser", select: "-password -authType -userType"})
         .sort({createdAt: -1}).lean()
 
-        return following;
+        return {
+            data: following,
+            followingCount: following.length
+        }
+
     } catch (error) {
-        throw new Error(error);
+        console.log(error);
     }
 }
 

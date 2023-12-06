@@ -1,5 +1,6 @@
 import Authenticate from "../../../middleware/auth";
 import { DesignModel } from "../../../models/Design";
+import { LikeModel } from "../../../models/Like";
 import { SavedDesignModel } from "../../../models/SavedDesign";
 
 
@@ -39,7 +40,54 @@ export const getSavedDesigns = async (_:any, __:any, context: any) => {
 
         const designs = await SavedDesignModel.find({ savedBy: user.user._id })
         .populate({path: "design"})
+        .populate({path: "designer", model: "User", select: "-password -authType -userType"})
         .sort({createdAt: -1}).lean()
+
+        return designs;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function getNumberOfLikes(_: any, { designId }, context: any) {
+    try {
+        Authenticate(context);
+
+        const likes = await LikeModel.find({ designId })
+        .populate({path: "likedBy", select: "-password -authType -userType"})
+        .sort({createdAt: -1}).lean()
+
+        return {
+            data: likes,
+            numberOfLikes: likes.length
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function searchDesigns(_: any, { searchTerm }, context: any) {
+    try {
+        Authenticate(context);
+
+        const designs = await DesignModel.find({
+            $or: [
+                { description: { $regex: searchTerm, $options: 'i' } }, 
+                { tags: { $regex: searchTerm, $options: 'i' } },
+                { category: { $regex: searchTerm, $options: 'i' } },
+              ],
+        })
+        .populate({path: "designer", select: "-password -authType -userType"})
+        .sort({createdAt: -1}).lean()
+
+        if(designs.length === 0) {
+            // return all the designs
+            const designs = await DesignModel.find()
+            .populate({path: "designer", select: "-password -authType -userType"})
+            .sort({createdAt: -1}).lean()
+
+            return designs;
+        }
 
         return designs;
     } catch (error) {

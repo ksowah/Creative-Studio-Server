@@ -8,7 +8,7 @@ const UserSchema = new Schema({
     },
     userType: {
         type: String,
-        enum: ["USER", "DESIGNER", "ARTIST"],
+        enum: ["USER", "CREATOR", "ARTIST", "DESIGNER"],
         default: "USER"
     },
     email: {

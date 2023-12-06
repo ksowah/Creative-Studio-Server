@@ -1,9 +1,20 @@
-import mongoose from "mongoose"
+import dotenv from 'dotenv';
 
-const connectDB = async () => {
-    const conn = await mongoose.connect(process.env.MONGO_URI)
+dotenv.config();
 
-    console.log(`MongoDB Connected ;)`) 
+const PORT = process.env.PORT || 4000; 
+
+export const config = {
+    server: {
+        port: PORT
+    },
+    auth: {
+        jwtSecret: process.env.JWT_SECRET
+    },
+    db: {
+        mongoURI: process.env.MONGO_URI
+    },
+    paystack: {
+        secretKey: process.env.PAYSTACK_SECRET
+    }
 }
-
-export default connectDB
