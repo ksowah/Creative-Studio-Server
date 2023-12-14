@@ -49,7 +49,7 @@ export const getSavedDesigns = async (_:any, __:any, context: any) => {
     }
 }
 
-export async function getNumberOfLikes(_: any, { designId }, context: any) {
+export async function getDesignLikes(_: any, { designId }, context: any) {
     try {
         Authenticate(context);
 

@@ -1,13 +1,6 @@
 import { UserModel } from "../../../models/User";
 import publish from "../../../utils/pubsub";
 
-// _id: ID!
-// fullName: String!
-// email: String!
-// avatar: String!
-// username: String!
-// followers: Int!
-// following: Int!
 
 
 export const newComment = {

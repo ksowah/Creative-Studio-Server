@@ -99,11 +99,21 @@ input CreateDesignInput {
     category: String!
 }
 
+input UpdateDesignInput {
+    designId: ID!
+    preview: String
+    description: String
+    designFiles: [String!]
+    tags: [String!]
+    category: String
+    designSubscription: String
+}
+
 type Query {
     getAllDesigns: [AllDesigns!]!
     getUserDesigns(userId: String!): [AllDesigns!]!
     getSavedDesigns: [SavedDesigns!]!
-    getNumberOfLikes(designId: String!): NumberOfLikes!
+    getDesignLikes(designId: String!): NumberOfLikes!
     searchDesigns(searchTerm: String!): [AllDesigns!]!
 }
 
@@ -114,6 +124,9 @@ type Mutation {
     saveDesign(designId: String!, designer: String): SavedDesign!
     unlikeDesign(designId: String!): String!
     becomeDesigner: User!
+    deleteDesign(designId: String!): String!
+    unsaveDesign(designId: String!): String!
+    updateDesign(updateDesignInput: UpdateDesignInput): Design!
 }
 
 type Subscription {

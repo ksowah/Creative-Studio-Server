@@ -1,6 +1,7 @@
 import Authenticate from '../../../middleware/auth';
 import { FollowModel } from '../../../models/Follow';
 
+
 export async function getMe(_: any, __: any, context: any) {
     try {
         const user = Authenticate(context)

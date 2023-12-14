@@ -46,24 +46,19 @@ const ArtSchema = new Schema(
     },
     auctionEndDate: {
       type: Date,
-      required: function () {
-        return this.artState === "auction";
-      },
-      default: Date.now(),
+      required: false
     },
     auctionStartDate: {
       type: Date,
       required: function () {
         return this.artState === "auction";
       },
-      default: Date.now(),
     },
     auctionStartPrice: {
       type: Number,
       required: function () {
         return this.artState === "auction";
       },
-      default: 0,
     },
     highestBid: {
       type: Number,

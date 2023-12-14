@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { UserModel } from '../../../models/User';
 import { __GENERATE_TOKEN, __sendEmail } from '../../../utils/functions';
-import { User } from '../../../types';
 import Authenticate from '../../../middleware/auth';
 import { FollowModel } from '../../../models/Follow';
 import { __template } from '../../../utils/html';
@@ -49,14 +48,13 @@ export const register = async (_:any, { registerInput: { fullName, email, passwo
 
 };
 
-
 // USER LOGIN
 export const login = async (_:any, { loginInput: { email, password } }) => {
 
     try {
-        const user: User = await UserModel.findOne({ email });
+        const user: any = await UserModel.findOne({ email, verified: true });
 
-        // @ts-ignore
+
         if (user && bcrypt.compare(password, user.password)) {
             const token = __GENERATE_TOKEN(user);
 
@@ -102,7 +100,25 @@ export const follow = async (_:any, { followedUser }, context:any) => {
 }
 
 export const unfollow = async (_:any, { followedUser }, context:any) => {
-    
+
+    try {
+        const user:any = Authenticate(context);
+
+        const alreadyFollowed = await FollowModel.findOne({followedUser, followedBy: user.user._id});
+
+        if(!alreadyFollowed) {
+            throw new Error("You have not followed this user");
+        }
+
+        const unfollow = await FollowModel.findByIdAndDelete(alreadyFollowed._id);
+
+        return unfollow;
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+
 }
 
 export const becomePremiumUser = async (_:any, __:any, context:any) => {
@@ -139,6 +155,27 @@ export const becomeCreator = async (_:any, __:any, context:any) => {
         }
 
         const updateUser = await UserModel.findByIdAndUpdate(user.user._id, {userType: "CREATOR"}, {new: true});
+
+        return updateUser;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const verifyUser = async (_:any, { userId }, context:any) => {
+    try {
+
+        const getUserFromDB = await UserModel.findById(userId);
+
+        if(!getUserFromDB) {
+            throw new Error("User not found");
+        }
+
+        if(getUserFromDB.verified) {
+            throw new Error("User already verified");
+        }
+
+        const updateUser = await UserModel.findByIdAndUpdate(userId, {verified: true}, {new: true});
 
         return updateUser;
     } catch (error) {

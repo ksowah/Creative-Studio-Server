@@ -3,7 +3,6 @@ import { CommentModel } from "../../../models/Comment";
 import { DesignModel } from "../../../models/Design";
 import publish from "../../../utils/pubsub";
 import { LikeModel } from "../../../models/Like";
-import { FollowModel } from "../../../models/Follow";
 import { SavedDesignModel } from "../../../models/SavedDesign";
 import { __sendEmail } from "../../../utils/functions";
 import { __template } from "../../../utils/html";
@@ -41,7 +40,6 @@ export const createDesign = async (
     createDesignInput: {
       preview,
       description,
-      designType,
       designFiles,
       tags,
       category,
@@ -65,7 +63,6 @@ export const createDesign = async (
       designer: user.user._id,
       preview,
       description,
-      designType,
       designFiles,
       tags,
       category,
@@ -79,6 +76,80 @@ export const createDesign = async (
     console.log(error);
   }
 };
+
+export const updateDesign = async (
+  _: any,
+  {
+    updateDesignInput: {
+      designId,
+      preview,
+      description,
+      designFiles,
+      tags,
+      category,
+      designSubscription,
+    },
+  },
+  context: any
+) => {
+  try {
+    const user: any = Authenticate(context);
+
+    const getUserFromDB = await UserModel.findById(user.user._id);
+
+    if (
+      getUserFromDB.userType !== "CREATOR" &&
+      getUserFromDB.userType !== "DESIGNER"
+    ) {
+      throw new Error("You are not a designer");
+    }
+
+    const design = await DesignModel.findById(designId);
+
+    if (!design) {
+      throw new Error("Design not found");
+    }
+
+    if (design.designer.toString() !== user.user._id.toString()) {
+      throw new Error("You are not the owner of this design");
+    }
+
+    const updateDesign = await DesignModel.findByIdAndUpdate(
+      designId,
+      {
+        preview,
+        description,
+        designFiles,
+        tags,
+        category,
+        designSubscription,
+      },
+      { new: true }
+    );
+
+    return updateDesign;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const deleteDesign = async (_: any, { designId }, context: any) => {
+  try {
+    const user: any = Authenticate(context);
+
+    const design = await DesignModel.findOne({_id: designId, designer: user.user._id});
+
+    if (!design) {
+      throw new Error("Design not found");
+    }
+
+    await DesignModel.findByIdAndDelete(designId);
+
+    return "Design deleted";
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export const createComment = async (
   _: any,
@@ -210,3 +281,30 @@ export const saveDesign = async (
     console.log(error);
   }
 };
+
+export const unsaveDesign = async (
+  _: any,
+  { designId },
+  context: any
+) => {
+  try {
+    const user: any = Authenticate(context);
+
+    const alreadySaved = await SavedDesignModel.findOne({
+      design: designId,
+      savedBy: user.user._id,
+    });
+
+    if (!alreadySaved) {
+      throw new Error("You have not saved this design");
+    }
+
+    await SavedDesignModel.findByIdAndDelete(alreadySaved._id);
+
+    return "Design unsaved";
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+

@@ -12,6 +12,7 @@ export const userTypeDefs = gql`
     username: String!
     available: Boolean!
     subscription: String!
+    verified: Boolean!
   }
 
   type ClientUser {
@@ -21,6 +22,8 @@ export const userTypeDefs = gql`
     avatar: String!
     username: String!
     available: Boolean!
+    subscription: String!
+    verified: Boolean!
 }
 
   type LoginUser {
@@ -92,7 +95,9 @@ type FollowingCount {
     register(registerInput: RegisterInput): User!
     login(loginInput: LoginInput): LoginUser!
     follow(followedUser: ID!): Follow!
+    unfollow(followedUser: ID!): Follow!
     becomeCreator: User!
     becomePremiumUser: User!
+    verifyUser(userId: ID!): User!
   }
 `;
