@@ -43,6 +43,9 @@ export const createDesign = async (
       designFiles,
       tags,
       category,
+      designSubscription,
+      designImages,
+      title
     },
   },
   context: any
@@ -64,8 +67,11 @@ export const createDesign = async (
       preview,
       description,
       designFiles,
+      designImages,
       tags,
       category,
+      designSubscription,
+      title,
       createdAt: new Date().toISOString(),
     });
 

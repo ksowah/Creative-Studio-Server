@@ -89,6 +89,7 @@ type FollowingCount {
     getMe: GetMeUser
     getFollowers(userId: ID!): FollowerCount!
     getFollowing(userId: ID!): FollowingCount!
+    getUserByUsername(username: String!): ClientUser!
   }
 
   type Mutation {

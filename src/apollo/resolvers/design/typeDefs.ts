@@ -19,9 +19,11 @@ type Design {
     description: String!
     designSubscription: String!
     designFiles: [String!]!
+    designImages: [String]
     createdAt: String!
     tags: [String!]!
     category: String!
+    title: String!
 }
 
 
@@ -95,8 +97,10 @@ input CreateDesignInput {
     description: String!
     designSubscription: String!
     designFiles: [String!]!
+    designImages: [String]
     tags: [String!]!
     category: String!
+    title: String!
 }
 
 input UpdateDesignInput {

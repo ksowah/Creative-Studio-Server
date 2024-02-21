@@ -1,4 +1,4 @@
-import { getMe, getFollowers, getFollowing } from "./resolvers/user/queries";
+import { getMe, getFollowers, getFollowing, getUserByUsername } from "./resolvers/user/queries";
 import {
   register,
   login,
@@ -63,6 +63,7 @@ export const resolvers = {
     getArtLikes,
     getArtBiddings,
     getHighestBid,
+    getUserByUsername,
   },
   Mutation: {
     register,

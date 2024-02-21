@@ -1,19 +1,40 @@
 import Authenticate from '../../../middleware/auth';
 import { FollowModel } from '../../../models/Follow';
+import { UserModel } from '../../../models/User';
 
 
 export async function getMe(_: any, __: any, context: any) {
     try {
         const user = Authenticate(context)
 
-        console.log("user >>", user);
-        
-
         return user;
     } catch (err) {
+        console.log(err);
+        
         throw new Error(err);
     }
 }
+
+
+// get user by username
+export async function getUserByUsername(_: any, { username }: any, context: any) {
+    try {
+        const user = await UserModel
+        .findOne({username})
+        .select("-password -authType -userType")
+        .lean()
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        return user;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 export async function getFollowers(_: any, { userId }, context: any) {

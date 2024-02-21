@@ -8,7 +8,7 @@ const DesignSchema = new Schema({
   },
   preview: {
     type: String,
-    require: true,
+    required: true,
   },
   views: {
     type: Number,
@@ -18,17 +18,21 @@ const DesignSchema = new Schema({
     type: Number,
     default: 0,
   },
+  title: {
+    type: String,
+    required: true
+  },
   description: String,
   designSubscription: {
     type: String,
     enum: ["FREE", "PAID"],
     default: "FREE",
   },
-  designFiles: [
-    {
-      type: String,
-    },
-  ],
+  designFiles: [ {type: String}],
+  designImages: [{
+    type:String,
+    required: false,
+  }],
   createdAt: {
     type: Schema.Types.Date,
     required: true,

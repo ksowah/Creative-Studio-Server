@@ -10,6 +10,11 @@ import { __template } from '../../../utils/html';
 export const register = async (_:any, { registerInput: { fullName, email, password, avatar, username } }) => {
     
     try {
+
+        if (!email || !password || !fullName || !username) {
+            throw new Error('All fields are required');
+        }
+
         const userAlreadyExist = await UserModel.findOne({ email });
     
         if (userAlreadyExist) {
@@ -32,9 +37,9 @@ export const register = async (_:any, { registerInput: { fullName, email, passwo
             await __sendEmail(
                 email,
                 __template(
-                    "Congratulations, your account has now been <strong>verified</strong>",
-                    "Sign in",
-                    "https://ksowah.netlify.app/",
+                    "Click the button below to <strong>verified</strong> your account. ",
+                    "Verify Account",
+                    `http://localhost:3000/verify/${user._id}`,
                 ),
                 "Account Verification"
             )
@@ -52,10 +57,14 @@ export const register = async (_:any, { registerInput: { fullName, email, passwo
 export const login = async (_:any, { loginInput: { email, password } }) => {
 
     try {
+        if (!email || !password) {
+            throw new Error('All fields are required');
+        }
+
         const user: any = await UserModel.findOne({ email, verified: true });
 
 
-        if (user && bcrypt.compare(password, user.password)) {
+        if (user && await bcrypt.compare(password, user.password)) {
             const token = __GENERATE_TOKEN(user);
 
             return { user, token }
