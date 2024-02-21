@@ -36,9 +36,11 @@ type AllDesigns {
     description: String!
     designSubscription: String!
     designFiles: [String!]!
+    designImages: [String]
     createdAt: String!
     tags: [String!]!
     category: String!
+    title: String!
 }
 
 type Comment {
@@ -119,6 +121,7 @@ type Query {
     getSavedDesigns: [SavedDesigns!]!
     getDesignLikes(designId: String!): NumberOfLikes!
     searchDesigns(searchTerm: String!): [AllDesigns!]!
+    getDesignById(designId: String!): AllDesigns!
 }
 
 type Mutation {

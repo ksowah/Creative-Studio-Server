@@ -27,6 +27,7 @@ import {
   getSavedDesigns,
   getDesignLikes,
   searchDesigns,
+  getDesignById,
 } from "./resolvers/design/queries";
 import { placeBid, updateBidAmount, updateStartPrice } from "./resolvers/auction/mutations";
 import { getArtBiddings, getHighestBid } from "./resolvers/auction/queries";
@@ -64,6 +65,7 @@ export const resolvers = {
     getArtBiddings,
     getHighestBid,
     getUserByUsername,
+    getDesignById,
   },
   Mutation: {
     register,
