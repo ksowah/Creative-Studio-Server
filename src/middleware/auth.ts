@@ -15,7 +15,7 @@ const Authenticate = (context:any) => {
 
         throw new Error("Authentication token must be bearer token");
     }
-    throw new Error("Authorization header must be provided");
+    throw new Error("You are not Authorized to perform this action");
 }
 
 export default Authenticate;

@@ -59,7 +59,11 @@ export const createDesign = async (
       getUserFromDB.userType !== "CREATOR" &&
       getUserFromDB.userType !== "DESIGNER"
     ) {
-      throw new Error("You are not a designer");
+      throw new Error("You are not authorized to publish a designs");
+    }
+
+    if(!preview || !description || !designFiles || !category || !designSubscription || !title){
+      throw new Error("Make sure all required fields are filled")
     }
 
     const newDesign = new DesignModel({
@@ -80,6 +84,7 @@ export const createDesign = async (
     return design;
   } catch (error) {
     console.log(error);
+    throw error
   }
 };
 
@@ -136,6 +141,7 @@ export const updateDesign = async (
     return updateDesign;
   } catch (error) {
     console.log(error);
+    throw error
   }
 }
 

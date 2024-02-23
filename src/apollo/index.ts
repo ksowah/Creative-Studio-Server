@@ -7,6 +7,7 @@ import {
   becomeCreator,
   becomePremiumUser,
   verifyUser,
+  editProfile,
 } from "./resolvers/user/mutations";
 import {
   createDesign,
@@ -95,6 +96,7 @@ export const resolvers = {
     placeBid,
     updateBidAmount,
     updateStartPrice,
+    editProfile,
   },
   Subscription: {
     newComment,

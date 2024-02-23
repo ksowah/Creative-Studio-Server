@@ -21,7 +21,6 @@ export async function getUserByUsername(_: any, { username }: any, context: any)
     try {
         const user = await UserModel
         .findOne({username})
-        .select("-password -authType -userType")
         .lean()
 
         if (!user) {

@@ -6,10 +6,14 @@ export interface User {
     password: String
     authType: String
     userType: String
-    username: String
     available: Boolean
-    followers: Number
-    following: Number
+    subscription: String
+    verified: Boolean
+    bio: String
+    username: String
+    specialization: String
+    phoneNumber: String
+    website: String
 }
 
 export interface MainUser {

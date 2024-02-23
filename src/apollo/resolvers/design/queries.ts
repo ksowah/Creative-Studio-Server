@@ -24,13 +24,12 @@ export const getDesignById = async (_:any, {designId}:any) => {
         return design
     } catch (error) {
         console.log(error)
+        throw error
     }
 }
 
 export const getUserDesigns = async (_: any, { userId }: any, context: any) => {
   try {
-    Authenticate(context);
-
     const designs = await DesignModel.find({ designer: userId })
       .populate({ path: "designer", select: "-password -authType -userType" })
       .sort({ createdAt: -1 })
@@ -39,6 +38,7 @@ export const getUserDesigns = async (_: any, { userId }: any, context: any) => {
     return designs;
   } catch (error) {
     console.log(error);
+    throw error
   }
 };
 
