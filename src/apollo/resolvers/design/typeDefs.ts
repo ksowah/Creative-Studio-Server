@@ -24,12 +24,14 @@ type Design {
     tags: [String!]!
     category: String!
     title: String!
+    previewImageRef: String!
+    designImagesRef: [String]
 }
 
 
 type AllDesigns {
     _id: ID!
-    designer: Designer!
+    designer: User!
     preview: String!
     views: Int!
     saves: Int!
@@ -41,6 +43,8 @@ type AllDesigns {
     tags: [String!]!
     category: String!
     title: String!
+    previewImageRef: String!
+    designImagesRef: [String]
 }
 
 type Comment {
@@ -103,6 +107,8 @@ input CreateDesignInput {
     tags: [String!]!
     category: String!
     title: String!
+    designImagesRef: [String]
+    previewImageRef: String!
 }
 
 input UpdateDesignInput {

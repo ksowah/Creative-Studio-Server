@@ -10,6 +10,14 @@ const DesignSchema = new Schema({
     type: String,
     required: true,
   },
+  previewImageRef: {
+    type: String,
+    required: true,
+  },
+  designImagesRef: [{
+    type:String,
+    required: false,
+  }],
   views: {
     type: Number,
     default: 0,
@@ -58,6 +66,7 @@ const DesignSchema = new Schema({
       "Photography",
     ],
     default: "UI/UX",
+   
   },
 });
 

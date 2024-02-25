@@ -6,7 +6,7 @@ import { SavedDesignModel } from "../../../models/SavedDesign";
 export const getAllDesigns = async () => {
   try {
     const designs = await DesignModel.find()
-      .populate({ path: "designer", select: "-password -authType -userType" })
+      .populate({ path: "designer" })
       .sort({ createdAt: -1 })
       .lean();
 
@@ -19,7 +19,7 @@ export const getAllDesigns = async () => {
 export const getDesignById = async (_:any, {designId}:any) => {
     try {
         const design = await DesignModel.findById(designId)
-        .populate({ path: "designer", select: "-password -authType -userType" })
+        .populate({ path: "designer" })
 
         return design
     } catch (error) {
@@ -31,7 +31,7 @@ export const getDesignById = async (_:any, {designId}:any) => {
 export const getUserDesigns = async (_: any, { userId }: any, context: any) => {
   try {
     const designs = await DesignModel.find({ designer: userId })
-      .populate({ path: "designer", select: "-password -authType -userType" })
+      .populate({ path: "designer" })
       .sort({ createdAt: -1 })
       .lean();
 
@@ -50,8 +50,7 @@ export const getSavedDesigns = async (_: any, __: any, context: any) => {
       .populate({ path: "design" })
       .populate({
         path: "designer",
-        model: "User",
-        select: "-password -authType -userType",
+        model: "User"
       })
       .sort({ createdAt: -1 })
       .lean();
@@ -67,7 +66,7 @@ export async function getDesignLikes(_: any, { designId }, context: any) {
     Authenticate(context);
 
     const likes = await LikeModel.find({ designId })
-      .populate({ path: "likedBy", select: "-password -authType -userType" })
+      .populate({ path: "likedBy"})
       .sort({ createdAt: -1 })
       .lean();
 
@@ -77,6 +76,7 @@ export async function getDesignLikes(_: any, { designId }, context: any) {
     };
   } catch (error) {
     console.log(error);
+    throw error
   }
 }
 
@@ -91,14 +91,14 @@ export async function searchDesigns(_: any, { searchTerm }, context: any) {
         { category: { $regex: searchTerm, $options: "i" } },
       ],
     })
-      .populate({ path: "designer", select: "-password -authType -userType" })
+      .populate({ path: "designer" })
       .sort({ createdAt: -1 })
       .lean();
 
     if (designs.length === 0) {
       // return all the designs
       const designs = await DesignModel.find()
-        .populate({ path: "designer", select: "-password -authType -userType" })
+        .populate({ path: "designer" })
         .sort({ createdAt: -1 })
         .lean();
 
@@ -107,6 +107,7 @@ export async function searchDesigns(_: any, { searchTerm }, context: any) {
 
     return designs;
   } catch (error) {
-    console.log(error);
+    console.log(error)
+    throw error
   }
 }

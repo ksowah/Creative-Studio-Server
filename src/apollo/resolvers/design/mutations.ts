@@ -45,7 +45,9 @@ export const createDesign = async (
       category,
       designSubscription,
       designImages,
-      title
+      title,
+      previewImageRef,
+      designImagesRef
     },
   },
   context: any
@@ -66,6 +68,10 @@ export const createDesign = async (
       throw new Error("Make sure all required fields are filled")
     }
 
+    if(!previewImageRef){
+      throw new Error("An unknown error occured, please try again later")
+    }
+
     const newDesign = new DesignModel({
       designer: user.user._id,
       preview,
@@ -76,10 +82,13 @@ export const createDesign = async (
       category,
       designSubscription,
       title,
+      previewImageRef,
+      designImagesRef,
       createdAt: new Date().toISOString(),
     });
 
     const design = await newDesign.save();
+    
 
     return design;
   } catch (error) {
