@@ -46,6 +46,9 @@ const UserSchema = new Schema({
   avatar: {
     type: String,
   },
+  avatarRef: {
+    type: String,
+  },
   verified: {
     type: Boolean,
     default: false,
