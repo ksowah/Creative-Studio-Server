@@ -40,7 +40,8 @@ export const createDesign = async (
     createDesignInput: {
       preview,
       description,
-      designFiles,
+      designFile,
+      designFileRef,
       tags,
       category,
       designSubscription,
@@ -64,7 +65,7 @@ export const createDesign = async (
       throw new Error("You are not authorized to publish a designs");
     }
 
-    if(!preview || !description || !designFiles || !category || !designSubscription || !title){
+    if(!preview || !description || !designFile || !category || !designSubscription || !title){
       throw new Error("Make sure all required fields are filled")
     }
 
@@ -76,7 +77,8 @@ export const createDesign = async (
       designer: user.user._id,
       preview,
       description,
-      designFiles,
+      designFile,
+      designFileRef,
       designImages,
       tags,
       category,

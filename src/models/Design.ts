@@ -36,7 +36,14 @@ const DesignSchema = new Schema({
     enum: ["FREE", "PAID"],
     default: "FREE",
   },
-  designFiles: [ {type: String}],
+  designFile: {
+    type: String,
+    required: true,
+  },
+  designFileRef: {
+    type: String,
+    required: true,
+  },
   designImages: [{
     type:String,
     required: false,

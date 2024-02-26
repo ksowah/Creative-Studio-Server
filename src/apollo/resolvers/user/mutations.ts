@@ -117,7 +117,7 @@ export const login = async (_: any, { loginInput: { email, password } }) => {
     });
 
     if (userNotVerified) {
-      throw new Error("This user is not veerified");
+      throw new Error("This user is not verified");
     }
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -125,7 +125,7 @@ export const login = async (_: any, { loginInput: { email, password } }) => {
 
       return { user, token };
     } else {
-      throw new Error("User not found");
+      throw new Error("Invalid user credentials");
     }
   } catch (error) {
     console.log(error);
