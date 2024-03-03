@@ -4,12 +4,15 @@ export const artTypeDefs = gql`
   input ArtInput {
     title: String!
     description: String!
-    artImages: [String!]!
+    artPreview: String!
+    previewImageRef: String!
+    artImagesRef: [String]
+    artImages: [String]
     category: String!
     dimensions: String!
-    price: Float!
+    price: Float
     artState: String!
-    auctionStartPrice: Float!
+    auctionStartPrice: Float
   }
 
   type ArtPiece {
@@ -17,37 +20,32 @@ export const artTypeDefs = gql`
     title: String!
     description: String!
     artist: ID!
-    artImages: [String!]!
+    artPreview: String!
+    previewImageRef: String!
+    artImagesRef: [String]
+    artImages: [String]
     category: String!
     dimensions: String!
     price: Float!
     artState: String!
-    auctionStartPrice: Float!
+    auctionStartPrice: Float
     auctionStartDate: String!
-  }
-
-  input UpdateArtInput {
-    title: String
-    description: String
-    artImages: [String!]
-    category: String
-    dimensions: String
-    price: Float
-    artState: String
-    artId: ID!
   }
 
   type UserArtPieces {
     _id: ID!
     title: String!
     description: String!
-    artist: ClientUser!
-    artImages: [String!]!
+    artist: User!
+    artPreview: String!
+    previewImageRef: String!
+    artImagesRef: [String]
+    artImages: [String]
     category: String!
     dimensions: String!
     price: Float!
     artState: String!
-    auctionStartPrice: Float!
+    auctionStartPrice: Float
   }
 
   type LikeArt {
@@ -79,7 +77,7 @@ export const artTypeDefs = gql`
     createArt(artInput: ArtInput): ArtPiece!
     becomeArtist: User!
     likeArt(artId: ID!): LikeArt!
-    updateArt(artInput: UpdateArtInput): ArtPiece!
+    updateArt(artInput: ArtInput): ArtPiece!
     deleteArt(artId: ID!): String!
     unlikeArt(artId: ID!): String!
   }
