@@ -9,7 +9,7 @@ const Authenticate = (context:any) => {
                 const user = jwt.verify(token, process.env.JWT_SECRET);
                 return user;
             } catch (error) {
-                throw new Error("Invalid/Expired token");
+                throw new Error("Your session has expired");
             }
         }
 

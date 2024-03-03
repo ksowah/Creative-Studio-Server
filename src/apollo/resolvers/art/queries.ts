@@ -3,13 +3,12 @@ import { ArtModel } from "../../../models/Art";
 import { LikeArtModel } from "../../../models/LikeArt";
 
 
-export const getAllArtWorks = async (_:any, __:any, context:any) => {
+export const getAllArtWorks = async () => {
     
     try {
-        Authenticate(context);
     
             const artWorks = await ArtModel.find()
-            .populate({path: "artist", select: "-password -authType -userType"})
+            .populate({path: "artist"})
             .sort({createdAt: -1}).lean()
         
             return artWorks;  
@@ -24,7 +23,7 @@ export const getUserArtWorks = async (_: any, { userId }: any, context: any) => 
         Authenticate(context);
 
         const artWorks = await ArtModel.find({ artist: userId })
-            .populate({path: "artist", select: "-password -authType -userType"})
+            .populate({path: "artist"})
             .sort({createdAt: -1}).lean()
 
         return artWorks;

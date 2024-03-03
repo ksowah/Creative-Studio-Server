@@ -41,6 +41,9 @@ export const createArt = async (
       price,
       artState,
       auctionStartPrice,
+      artPreview,
+      previewImageRef,
+      artImagesRef,
     },
   },
   context: any
@@ -57,6 +60,10 @@ export const createArt = async (
       throw new Error("You are not an artist");
     }
 
+    if (!title || !description || !category || !dimensions || !artState || !artPreview) {
+      throw new Error("Fill all required fields");
+    }
+
     const newArt = new ArtModel({
       title,
       description,
@@ -67,14 +74,19 @@ export const createArt = async (
       price,
       artState,
       auctionStartPrice,
+      artPreview,
+      previewImageRef,
+      artImagesRef,
       auctionStartDate: new Date().toISOString(),
     });
 
     const art = await newArt.save();
 
     return art;
+
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 
@@ -90,6 +102,10 @@ export const updateArt = async (
       dimensions,
       price,
       artState,
+      auctionStartPrice,
+      artPreview,
+      previewImageRef,
+      artImagesRef,
     },
   },
   context: any
@@ -126,6 +142,10 @@ export const updateArt = async (
         dimensions,
         price,
         artState,
+        auctionStartPrice,
+        artPreview,
+        previewImageRef,
+        artImagesRef,
       },
       { new: true }
     );

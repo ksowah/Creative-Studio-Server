@@ -15,17 +15,30 @@ const ArtSchema = new Schema(
       ref: "User",
       required: true,
     },
-    artImages: {
-      type: [String],
+    artPreview: {
+      type: String,
       required: true,
     },
+    previewImageRef: {
+      type: String,
+      required: true,
+    },
+    artImages: {
+      type: [String],
+    },
+    artImagesRef: [{
+      type:String,
+      required: false,
+    }],
     category: {
       type: String,
       enum: [
         "painting",
-        "oil painting",
+        "digitalArt",
         "sculpture",
-        "landscape",
+        "pencilDrawing",
+        "calligraphy",
+        "textileArt",
       ],
       default: "painting",
     },
