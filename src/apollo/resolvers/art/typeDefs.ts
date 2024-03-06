@@ -69,6 +69,7 @@ export const artTypeDefs = gql`
 
   type Query {
     getAllArtWorks: [UserArtPieces!]!
+    getArtById(artId: ID!): UserArtPieces!
     getUserArtWorks(userId: ID!): [UserArtPieces!]!
     getArtLikes(artId: ID!): ArtLikes!
   }

@@ -21,7 +21,7 @@ import {
   updateDesign,
 } from "./resolvers/design/mutations";
 import { createArt, becomeArtist, likeArt, updateArt, deleteArt, unlikeArt } from "./resolvers/art/mutations";
-import { getAllArtWorks, getUserArtWorks, getArtLikes } from "./resolvers/art/queries";
+import { getAllArtWorks, getUserArtWorks, getArtLikes, getArtById } from "./resolvers/art/queries";
 import {
   getAllDesigns,
   getUserDesigns,
@@ -67,6 +67,7 @@ export const resolvers = {
     getHighestBid,
     getUserByUsername,
     getDesignById,
+    getArtById,
   },
   Mutation: {
     register,
