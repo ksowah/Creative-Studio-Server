@@ -44,6 +44,8 @@ export const createArt = async (
       artPreview,
       previewImageRef,
       artImagesRef,
+      auctionStartDate,
+      auctionEndDate,
     },
   },
   context: any
@@ -77,7 +79,8 @@ export const createArt = async (
       artPreview,
       previewImageRef,
       artImagesRef,
-      auctionStartDate: new Date().toISOString(),
+      auctionStartDate,
+      auctionEndDate,
     });
 
     const art = await newArt.save();

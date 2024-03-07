@@ -13,6 +13,8 @@ export const artTypeDefs = gql`
     price: Float
     artState: String!
     auctionStartPrice: Float
+    auctionStartDate: String
+    auctionEndDate: String
   }
 
   type ArtPiece {
@@ -30,6 +32,7 @@ export const artTypeDefs = gql`
     artState: String!
     auctionStartPrice: Float
     auctionStartDate: String!
+    auctionEndDate: String
   }
 
   type UserArtPieces {
@@ -46,6 +49,8 @@ export const artTypeDefs = gql`
     price: Float!
     artState: String!
     auctionStartPrice: Float
+    auctionStartDate: String!
+    auctionEndDate: String
   }
 
   type LikeArt {
