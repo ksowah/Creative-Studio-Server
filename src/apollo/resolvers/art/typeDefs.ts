@@ -31,7 +31,7 @@ export const artTypeDefs = gql`
     price: Float!
     artState: String!
     auctionStartPrice: Float
-    auctionStartDate: String!
+    auctionStartDate: String
     auctionEndDate: String
   }
 
@@ -49,7 +49,7 @@ export const artTypeDefs = gql`
     price: Float!
     artState: String!
     auctionStartPrice: Float
-    auctionStartDate: String!
+    auctionStartDate: String
     auctionEndDate: String
   }
 
