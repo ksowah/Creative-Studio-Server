@@ -12,7 +12,7 @@ export const auctionTypeDefs = gql`
 
     type UserBid {
         _id: ID!
-        bidBy: ClientUser!
+        bidBy: User!
         bidAt: String!
         bidAmount: Float!
         artId: ID!
@@ -27,5 +27,6 @@ export const auctionTypeDefs = gql`
     type Query {
         getArtBiddings(artId: ID!): [UserBid!]!
         getHighestBid(artId: ID!): UserBid!
+        getActiveAndUpcomingAuctions: [UserArtPieces!]!
     }
 `

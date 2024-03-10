@@ -49,7 +49,7 @@ const ArtSchema = new Schema(
     artState: {
       type: String,
       enum: ["onSale", "auction", "sold", "showcase"],
-      default: "onSale",
+      default: "showcase",
     },
     price: {
       type: Number,
@@ -59,7 +59,9 @@ const ArtSchema = new Schema(
     },
     auctionEndDate: {
       type: Date,
-      required: false
+      required: function () {
+        return this.artState === "auction";
+      },
     },
     auctionStartDate: {
       type: Date,
