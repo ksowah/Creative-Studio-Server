@@ -9,7 +9,6 @@ export const getCartItems = async (_: any, __: any, context: any) => {
       .populate({ path: "item" })
       .populate({
         path: "artist",
-        select: "-password -authType -userType",
       })
       .sort({ createdAt: -1 })
       .lean();

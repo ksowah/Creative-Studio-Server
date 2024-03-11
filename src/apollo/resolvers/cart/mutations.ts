@@ -17,6 +17,7 @@ export const addToCart = async (_: any, { itemId, artist }: any, context: any) =
         return cart;
     } catch (error) {
         console.log(error);
+        throw error
     }
 }
 
@@ -35,5 +36,6 @@ export const removeFromCart = async (_: any, { itemId }: any, context: any) => {
         return item;
     } catch (error) {
         console.log(error);
+        throw error
     }
 }

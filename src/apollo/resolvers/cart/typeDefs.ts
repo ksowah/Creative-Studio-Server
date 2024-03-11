@@ -10,7 +10,7 @@ export const cartTypeDefs = gql`
     type CartItems {
         item: ArtPiece!
         user: ID!
-        artist: ClientUser!
+        artist: User!
     }
 
     type Mutation {
