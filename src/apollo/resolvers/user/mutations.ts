@@ -4,12 +4,14 @@ import { __GENERATE_TOKEN, __sendEmail } from "../../../utils/functions";
 import Authenticate from "../../../middleware/auth";
 import { FollowModel } from "../../../models/Follow";
 import { __template } from "../../../utils/html";
+import { config } from "../../../config";
 
 // USER REGISTRATION
 export const register = async (
   _: any,
   { registerInput: { fullName, email, password, avatar, username } }
 ) => {
+
   try {
     if (!email || !password || !fullName || !username) {
       throw new Error("All fields are required");
@@ -45,7 +47,11 @@ export const register = async (
         __template(
           "Click the button below to <strong>verified</strong> your account. ",
           "Verify Account",
-          `http://localhost:3000/verify/${user._id}`
+          `${
+            config.environment === "development"
+              ? `http://localhost:3000/verify/${user._id}`
+              : `https://creative-studio-client.vercel.app/verify/${user._id}`
+          }`
         ),
         "Account Verification"
       );
@@ -79,7 +85,7 @@ export const editProfile = async (
       throw new Error("Make sure all required fields are filled");
     }
 
-    const editUserProfile:any = await UserModel.findByIdAndUpdate(
+    const editUserProfile: any = await UserModel.findByIdAndUpdate(
       user?.user._id,
       {
         fullName,
@@ -92,10 +98,9 @@ export const editProfile = async (
       { new: true }
     );
 
-      const token = __GENERATE_TOKEN(editUserProfile);
-    
+    const token = __GENERATE_TOKEN(editUserProfile);
 
-    return {user:editUserProfile, token};
+    return { user: editUserProfile, token };
   } catch (error) {
     console.log(error);
     throw error;

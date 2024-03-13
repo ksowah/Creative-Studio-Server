@@ -16,5 +16,6 @@ export const config = {
     },
     paystack: {
         secretKey: process.env.PAYSTACK_SECRET
-    }
+    },
+    environment: process.env.NODE_ENV
 }
