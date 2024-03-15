@@ -368,7 +368,6 @@ return `
                             </tr>
                           </tbody>
                         </table>
-                        <p>Remember you can turn off feedack notifications in your email at any time</p>
                         <p>If button is unresponsive, copy and paste this url in your browser <strong>${btnUrl}</strong></p>
                         <p>Good luck! Break a leg.</p>
                       </td>
