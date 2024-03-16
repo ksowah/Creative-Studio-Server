@@ -5,6 +5,7 @@ import Authenticate from "../../../middleware/auth";
 import { FollowModel } from "../../../models/Follow";
 import { __template } from "../../../utils/html";
 import { config } from "../../../config";
+import { WalletModel } from "../../../models/Wallet";
 
 // USER REGISTRATION
 export const register = async (
@@ -250,6 +251,12 @@ export const verifyUser = async (_: any, { userId }, context: any) => {
       throw new Error("User already verified");
     }
 
+    const wallet = new WalletModel({
+      user: userId
+    })
+
+    await wallet.save()
+
     const updateUser = await UserModel.findByIdAndUpdate(
       userId,
       { verified: true },
@@ -259,5 +266,6 @@ export const verifyUser = async (_: any, { userId }, context: any) => {
     return updateUser;
   } catch (error) {
     console.log(error);
+    throw error
   }
 };
