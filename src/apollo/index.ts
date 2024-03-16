@@ -40,6 +40,10 @@ import { cartTypeDefs } from "./resolvers/cart/typeDefs";
 import { addToCart, removeFromCart } from "./resolvers/cart/mutations";
 import { getCartItems } from "./resolvers/cart/queries"
 import { auctionTypeDefs } from "./resolvers/auction/typeDefs";
+import { walletTypeDefs } from "./resolvers/wallet/typeDefs";
+import { getWalletBallance } from "./resolvers/wallet/queries"
+import { deposit, withdraw } from "./resolvers/wallet/mutations"
+
 
 export const typeDefs = [
   userTypeDefs,
@@ -47,6 +51,7 @@ export const typeDefs = [
   artTypeDefs,
   cartTypeDefs,
   auctionTypeDefs,
+  walletTypeDefs,
 ];
 
 export const resolvers = {
@@ -69,6 +74,7 @@ export const resolvers = {
     getDesignById,
     getArtById,
     getActiveAndUpcomingAuctions,
+    getWalletBallance,
   },
   Mutation: {
     register,
@@ -99,6 +105,8 @@ export const resolvers = {
     updateBidAmount,
     updateStartPrice,
     editProfile,
+    deposit,
+    withdraw,
   },
   Subscription: {
     newComment,
