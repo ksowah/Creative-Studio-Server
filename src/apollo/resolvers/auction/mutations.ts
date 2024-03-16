@@ -1,6 +1,7 @@
 import Authenticate from "../../../middleware/auth";
 import { ArtModel } from "../../../models/Art";
 import { BidModel } from "../../../models/Bid";
+import { WalletModel } from "../../../models/Wallet";
 
 // TO DO: NO AUCTION AFTER END DATE
 export const placeBid = async (
@@ -12,6 +13,12 @@ export const placeBid = async (
     const user: any = Authenticate(context);
 
     const getArt = await ArtModel.findById(artId);
+
+    const getWalletBallance:any = await WalletModel.findOne({user: user?.user._id}).lean();
+
+    if (getWalletBallance?.balance < bidAmount) {
+      throw new Error("Studio balance not enough to place this bid");
+    }
 
     if (!bidAmount) {
       throw new Error("Bid amount is required");
