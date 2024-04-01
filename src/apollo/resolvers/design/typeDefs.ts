@@ -144,6 +144,7 @@ type Mutation {
     deleteDesign(designId: String!): String!
     unsaveDesign(designId: String!): String!
     updateDesign(updateDesignInput: UpdateDesignInput): Design!
+    countDesignViews(designId: String!): Int!
 }
 
 type Subscription {

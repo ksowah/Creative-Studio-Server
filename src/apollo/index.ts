@@ -19,6 +19,7 @@ import {
   deleteDesign,
   unsaveDesign,
   updateDesign,
+  countDesignViews,
 } from "./resolvers/design/mutations";
 import { createArt, becomeArtist, likeArt, updateArt, deleteArt, unlikeArt } from "./resolvers/art/mutations";
 import { getAllArtWorks, getUserArtWorks, getArtLikes, getArtById } from "./resolvers/art/queries";
@@ -107,6 +108,7 @@ export const resolvers = {
     editProfile,
     deposit,
     withdraw,
+    countDesignViews,
   },
   Subscription: {
     newComment,
