@@ -7,6 +7,8 @@ import { SavedDesignModel } from "../../../models/SavedDesign";
 import { __sendEmail } from "../../../utils/functions";
 import { __template } from "../../../utils/html";
 import { UserModel } from "../../../models/User";
+import { error } from "console";
+
 
 export const becomeDesigner = async (_: any, __: any, context: any) => {
   try {
@@ -247,6 +249,7 @@ export const likeDesign = async (_: any, { designId }, context: any) => {
     return likeResult;
   } catch (error) {
     console.log(error);
+    throw error
   }
 };
 
@@ -264,8 +267,6 @@ export const unlikeDesign = async (_: any, { designId }, context: any) => {
     }
 
     const unlike = await LikeModel.findByIdAndDelete(alreadyLiked._id);
-
-    console.log(unlike);
 
     return "Design unliked";
   } catch (error) {
@@ -327,7 +328,28 @@ export const unsaveDesign = async (
     return "Design unsaved";
   } catch (error) {
     console.log(error);
+    throw error
   }
 };
+
+export const countDesignViews = async (_:any, {designId})=> {
+  try {
+    const design = await DesignModel.findById(designId)
+
+    if(!design){
+      throw new Error("Design not found")
+    }
+
+    const updateDesignViewCount = await DesignModel.findByIdAndUpdate(designId, {
+      views: design.views + 1
+    })
+
+    return updateDesignViewCount.views
+
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
 
 

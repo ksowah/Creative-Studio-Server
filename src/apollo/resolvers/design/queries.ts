@@ -63,8 +63,6 @@ export const getSavedDesigns = async (_: any, __: any, context: any) => {
 
 export async function getDesignLikes(_: any, { designId }, context: any) {
   try {
-    Authenticate(context);
-
     const likes = await LikeModel.find({ designId })
       .populate({ path: "likedBy"})
       .sort({ createdAt: -1 })
