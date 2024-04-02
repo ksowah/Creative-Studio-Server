@@ -167,6 +167,7 @@ export const follow = async (_: any, { followedUser }, context: any) => {
     return followResult;
   } catch (error) {
     console.log(error);
+    throw error
   }
 };
 
@@ -188,6 +189,7 @@ export const unfollow = async (_: any, { followedUser }, context: any) => {
     return unfollow;
   } catch (error) {
     console.log(error);
+    throw error
   }
 };
 
