@@ -8,6 +8,7 @@ import { __sendEmail } from "../../../utils/functions";
 import { __template } from "../../../utils/html";
 import { UserModel } from "../../../models/User";
 import { error } from "console";
+import { CommentRepliesModel } from "../../../models/CommentReplies";
 
 export const becomeDesigner = async (_: any, __: any, context: any) => {
   try {
@@ -226,6 +227,36 @@ export const createComment = async (
     return commentResult;
   } catch (error) {
     console.log(error);
+    throw error
+  }
+};
+
+export const replyToComment = async (
+  _: any,
+  { commentId, reply },
+  context: any
+) => {
+  try {
+    const user: any = Authenticate(context);
+
+    const comment = await CommentModel.findById(commentId);
+
+    if(!comment){
+      throw new Error("Comment not found")
+    }
+
+    const newReply = new CommentRepliesModel({
+      reply,
+      commentId,
+      repliedBy: user?.user._id,
+    })
+
+    const replyResult = await newReply.save();
+
+    return replyResult
+  } catch(error) {
+    console.log(error);
+    throw error
   }
 };
 

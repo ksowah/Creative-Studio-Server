@@ -1,4 +1,6 @@
 import Authenticate from "../../../middleware/auth";
+import { CommentModel } from "../../../models/Comment";
+import { CommentRepliesModel } from "../../../models/CommentReplies";
 import { DesignModel } from "../../../models/Design";
 import { LikeModel } from "../../../models/Like";
 import { SavedDesignModel } from "../../../models/SavedDesign";
@@ -74,6 +76,45 @@ export async function getDesignLikes(_: any, { designId }) {
     };
   } catch (error) {
     console.log(error);
+    throw error
+  }
+}
+
+export const getDesignComments = async (_:any, {designId})=> {
+  try {
+    const design = await DesignModel.findById(designId)
+
+    if(!design){
+      throw new Error("Design not found")
+    }
+
+    const comments = await CommentModel.find({designId})
+    .populate({path: "commentedBy"})
+    .sort({ createdAt: -1 })
+    .lean()
+
+    return comments
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getCommentReplies = async (_:any, {commentId}) => {
+  try {
+    const comment = await CommentModel.findById(commentId)
+
+    if(!comment){
+      throw new Error("Comment not found")
+    }
+
+    const replies = await CommentRepliesModel.find({commentId})
+    .populate({path: "repliedBy"})
+    .lean()
+
+    return replies;
+  } catch (error) {
+    console.log(error)
     throw error
   }
 }
