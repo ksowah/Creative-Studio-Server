@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express';    
+import { gql } from "apollo-server-express";
 
 export const designTypeDefs = gql`
 
@@ -57,10 +57,24 @@ type Comment {
     designId: String!
 }
 
+type Reply {
+    reply: String!
+    commentId: String!
+    repliedBy: ID!
+    repliedAt: String!
+}
+
+type UserReply {
+    reply: String!
+    commentId: String!
+    repliedBy: User!
+    repliedAt: String!
+}
+
 type UserComment {
     _id: ID!
     comment: String!
-    commentedBy: Designer!
+    commentedBy: User!
     commentedAt: String!
     designId: String!
 }
@@ -132,11 +146,14 @@ type Query {
     getDesignLikes(designId: String!): NumberOfLikes!
     searchDesigns(searchTerm: String!): [AllDesigns!]!
     getDesignById(designId: String!): AllDesigns!
+    getDesignComments(designId: String!): [UserComment!]
+    getCommentReplies(commentId: String!): [UserReply!]
 }
 
 type Mutation {
     createDesign(createDesignInput: CreateDesignInput): Design!
     createComment(designId: String!, comment: String!): Comment!
+    replyToComment(commentId: String!, reply: String!): Reply!
     likeDesign(designId: String!): Like!
     saveDesign(designId: String!, designer: String): SavedDesign!
     unlikeDesign(designId: String!): String!

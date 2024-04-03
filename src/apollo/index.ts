@@ -12,6 +12,7 @@ import {
 import {
   createDesign,
   createComment,
+  replyToComment,
   likeDesign,
   saveDesign,
   unlikeDesign,
@@ -28,6 +29,8 @@ import {
   getUserDesigns,
   getSavedDesigns,
   getDesignLikes,
+  getDesignComments,
+  getCommentReplies,
   searchDesigns,
   getDesignById,
 } from "./resolvers/design/queries";
@@ -64,6 +67,8 @@ export const resolvers = {
     getFollowing,
     getSavedDesigns,
     getDesignLikes,
+    getDesignComments,
+    getCommentReplies,
     searchDesigns,
     getAllArtWorks,
     getUserArtWorks,
@@ -82,6 +87,7 @@ export const resolvers = {
     login,
     createDesign,
     createComment,
+    replyToComment,
     likeDesign,
     follow,
     unfollow,
