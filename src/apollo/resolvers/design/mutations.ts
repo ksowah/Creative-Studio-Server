@@ -9,7 +9,6 @@ import { __template } from "../../../utils/html";
 import { UserModel } from "../../../models/User";
 import { error } from "console";
 
-
 export const becomeDesigner = async (_: any, __: any, context: any) => {
   try {
     const user: any = Authenticate(context);
@@ -18,7 +17,7 @@ export const becomeDesigner = async (_: any, __: any, context: any) => {
 
     if (getUserFromDB.subscription !== "PREMIUM") {
       throw new Error("You are not a premium user");
-  }
+    }
 
     if (getUserFromDB.userType !== "USER") {
       throw new Error("You are already a creater");
@@ -50,7 +49,7 @@ export const createDesign = async (
       designImages,
       title,
       previewImageRef,
-      designImagesRef
+      designImagesRef,
     },
   },
   context: any
@@ -67,12 +66,19 @@ export const createDesign = async (
       throw new Error("You are not authorized to publish a designs");
     }
 
-    if(!preview || !description || !designFile || !category || !designSubscription || !title){
-      throw new Error("Make sure all required fields are filled")
+    if (
+      !preview ||
+      !description ||
+      !designFile ||
+      !category ||
+      !designSubscription ||
+      !title
+    ) {
+      throw new Error("Make sure all required fields are filled");
     }
 
-    if(!previewImageRef){
-      throw new Error("An unknown error occured, please try again later")
+    if (!previewImageRef) {
+      throw new Error("An unknown error occured, please try again later");
     }
 
     const newDesign = new DesignModel({
@@ -92,12 +98,11 @@ export const createDesign = async (
     });
 
     const design = await newDesign.save();
-    
 
     return design;
   } catch (error) {
     console.log(error);
-    throw error
+    throw error;
   }
 };
 
@@ -154,15 +159,18 @@ export const updateDesign = async (
     return updateDesign;
   } catch (error) {
     console.log(error);
-    throw error
+    throw error;
   }
-}
+};
 
 export const deleteDesign = async (_: any, { designId }, context: any) => {
   try {
     const user: any = Authenticate(context);
 
-    const design = await DesignModel.findOne({_id: designId, designer: user.user._id});
+    const design = await DesignModel.findOne({
+      _id: designId,
+      designer: user.user._id,
+    });
 
     if (!design) {
       throw new Error("Design not found");
@@ -174,7 +182,7 @@ export const deleteDesign = async (_: any, { designId }, context: any) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const createComment = async (
   _: any,
@@ -249,7 +257,7 @@ export const likeDesign = async (_: any, { designId }, context: any) => {
     return likeResult;
   } catch (error) {
     console.log(error);
-    throw error
+    throw error;
   }
 };
 
@@ -300,17 +308,22 @@ export const saveDesign = async (
 
     const saveResult = await save.save();
 
+    const design = await DesignModel.findById(designId);
+
+    if (!design) {
+      throw new Error("Design not found");
+    }
+
+    await DesignModel.findByIdAndUpdate(designId, { saves: design.saves + 1 });
+
     return saveResult;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 
-export const unsaveDesign = async (
-  _: any,
-  { designId },
-  context: any
-) => {
+export const unsaveDesign = async (_: any, { designId }, context: any) => {
   try {
     const user: any = Authenticate(context);
 
@@ -325,31 +338,39 @@ export const unsaveDesign = async (
 
     await SavedDesignModel.findByIdAndDelete(alreadySaved._id);
 
+    const design = await DesignModel.findById(designId);
+
+    if (!design) {
+      throw new Error("Design not found");
+    }
+
+    await DesignModel.findByIdAndUpdate(designId, { saves: design.saves - 1 });
+
     return "Design unsaved";
   } catch (error) {
     console.log(error);
-    throw error
+    throw error;
   }
 };
 
-export const countDesignViews = async (_:any, {designId})=> {
+export const countDesignViews = async (_: any, { designId }) => {
   try {
-    const design = await DesignModel.findById(designId)
+    const design = await DesignModel.findById(designId);
 
-    if(!design){
-      throw new Error("Design not found")
+    if (!design) {
+      throw new Error("Design not found");
     }
 
-    const updateDesignViewCount = await DesignModel.findByIdAndUpdate(designId, {
-      views: design.views + 1
-    })
+    const updateDesignViewCount = await DesignModel.findByIdAndUpdate(
+      designId,
+      {
+        views: design.views + 1,
+      }
+    );
 
-    return updateDesignViewCount.views
-
+    return updateDesignViewCount.views;
   } catch (error) {
-    console.log(error)
-    throw error
+    console.log(error);
+    throw error;
   }
-}
-
-
+};
