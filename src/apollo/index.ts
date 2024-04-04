@@ -36,7 +36,7 @@ import {
 } from "./resolvers/design/queries";
 import { placeBid, updateBidAmount, updateStartPrice } from "./resolvers/auction/mutations";
 import { getArtBiddings, getHighestBid, getActiveAndUpcomingAuctions } from "./resolvers/auction/queries";
-import { newComment, newLike } from "./resolvers/design/subscriptions";
+import { newComment, newLike, newCommentReply } from "./resolvers/design/subscriptions";
 import { userTypeDefs } from "./resolvers/user/typeDefs";
 import { designTypeDefs } from "./resolvers/design/typeDefs";
 import { artTypeDefs } from "./resolvers/art/typeDefs";
@@ -119,5 +119,6 @@ export const resolvers = {
   Subscription: {
     newComment,
     newLike,
+    newCommentReply
   },
 };
