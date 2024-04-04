@@ -253,6 +253,10 @@ export const replyToComment = async (
 
     const replyResult = await newReply.save();
 
+    publish.pubsub.publish(`NEW_REPLY`, {
+      newCommentReply: replyResult,
+    });
+
     return replyResult
   } catch(error) {
     console.log(error);

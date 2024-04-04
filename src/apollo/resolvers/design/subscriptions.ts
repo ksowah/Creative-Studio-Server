@@ -32,6 +32,31 @@ export const newComment = {
 
 }
 
+export const newCommentReply = {
+    subscribe: publish.withFilter(
+        ()=> publish.pubsub.asyncIterator(["NEW_REPLY"]),
+        async (payload, variables) => {
+            const payLoadCommentId = payload.newCommentReply.commentId
+            const variablesCommentId = variables.commentId.trim()
+
+            const detailsOfUserReplied = await UserModel.findById(payload.newCommentReply.repliedBy)
+            const { _id, fullName, email, avatar, username } = detailsOfUserReplied;
+            payload.newCommentReply = {
+                ...payload.newCommentReply._doc,
+                repliedBy :  {
+                    _id,
+                    fullName,
+                    email,
+                    avatar,
+                    username
+                }
+            }
+
+            return payLoadCommentId === variablesCommentId
+        }
+    )
+}
+
 export const newLike = {
     subscribe: publish.withFilter(
         () => publish.pubsub.asyncIterator(["LIKE_DESIGN"]),

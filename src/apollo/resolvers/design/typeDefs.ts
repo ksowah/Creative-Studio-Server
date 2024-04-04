@@ -166,6 +166,7 @@ type Mutation {
 
 type Subscription {
     newComment(designId: ID!): UserComment!
+    newCommentReply(commentId: ID!): UserReply!
     newLike(designId: ID!): UserLike!
 }
 `;
