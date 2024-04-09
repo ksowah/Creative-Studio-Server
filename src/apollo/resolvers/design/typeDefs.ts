@@ -141,6 +141,7 @@ input UpdateDesignInput {
 
 type Query {
     getAllDesigns: [AllDesigns!]!
+    getDesignsByCategory(category: String!): [AllDesigns!]!
     getUserDesigns(userId: String!): [AllDesigns!]!
     getSavedDesigns: [SavedDesigns!]!
     getDesignLikes(designId: String!): NumberOfLikes!
