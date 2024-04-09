@@ -26,6 +26,7 @@ import { createArt, becomeArtist, likeArt, updateArt, deleteArt, unlikeArt } fro
 import { getAllArtWorks, getUserArtWorks, getArtLikes, getArtById } from "./resolvers/art/queries";
 import {
   getAllDesigns,
+  getDesignsByCategory,
   getUserDesigns,
   getSavedDesigns,
   getDesignLikes,
@@ -62,6 +63,7 @@ export const resolvers = {
   Query: {
     getMe,
     getAllDesigns,
+    getDesignsByCategory,
     getUserDesigns,
     getFollowers,
     getFollowing,

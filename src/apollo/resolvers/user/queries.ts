@@ -53,7 +53,6 @@ export async function getFollowers(_: any, { userId }) {
 
 export async function getFollowing(_: any, { userId }) {
   try {
-
     const following = await FollowModel.find({ followedBy: userId })
       .populate({
         path: "followedUser",
