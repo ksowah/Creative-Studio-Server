@@ -58,6 +58,7 @@ type Comment {
 }
 
 type Reply {
+    _id: String!
     reply: String!
     commentId: String!
     repliedBy: ID!
@@ -65,6 +66,7 @@ type Reply {
 }
 
 type UserReply {
+    _id: String!
     reply: String!
     commentId: String!
     repliedBy: User!
