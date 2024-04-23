@@ -106,6 +106,8 @@ export const updateArt = async (
       price,
       artState,
       auctionStartPrice,
+      auctionStartDate,
+      auctionEndDate,
       artPreview,
       previewImageRef,
       artImagesRef,
@@ -135,6 +137,12 @@ export const updateArt = async (
       throw new Error("You are not the owner of this art");
     }
 
+    if (artState === "auction"){
+      if(!auctionStartPrice && !auctionStartDate && !auctionEndDate){
+        throw new Error("You need to set auction start date, end date and start price")
+      }
+    }
+
     const updatedArt = await ArtModel.findByIdAndUpdate(
       artId,
       {
@@ -146,6 +154,8 @@ export const updateArt = async (
         price,
         artState,
         auctionStartPrice,
+        auctionStartDate,
+        auctionEndDate,
         artPreview,
         previewImageRef,
         artImagesRef,
@@ -156,6 +166,7 @@ export const updateArt = async (
     return updatedArt;
   } catch (error) {
     console.log(error);
+    throw error
   }
 };
 
