@@ -50,6 +50,7 @@ export const artTypeDefs = gql`
     auctionStartPrice: Float
     auctionStartDate: String
     auctionEndDate: String
+    highestBid: Float
   }
 
   type UserArtPieces {
@@ -68,6 +69,7 @@ export const artTypeDefs = gql`
     auctionStartPrice: Float
     auctionStartDate: String
     auctionEndDate: String
+    highestBid: Float
   }
 
   type LikeArt {

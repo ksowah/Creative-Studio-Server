@@ -8,7 +8,11 @@ const Wallet = new Schema({
     },
     balance: {
         type: Number,
-        default: 0.00,
+        default: 0,
+    },
+    auctionBidsPlacedAmount: {
+        type: Number,
+        default: 0,
     }
 }, {timestamps: true})
 

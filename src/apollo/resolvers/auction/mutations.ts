@@ -14,7 +14,9 @@ export const placeBid = async (
 
     const getArt = await ArtModel.findById(artId);
 
-    const getWalletBallance:any = await WalletModel.findOne({user: user?.user._id}).lean();
+    const getWalletBallance = await WalletModel.findOne({
+      user: user?.user._id,
+    });
 
     if (getWalletBallance?.balance < bidAmount) {
       throw new Error("Studio balance not enough to place this bid");
@@ -40,14 +42,37 @@ export const placeBid = async (
       throw new Error("Bid amount should be greater than starting price");
     }
 
+    if (bidAmount < getArt.highestBid) {
+      throw new Error("Bid amount should be greater than highest bid");
+    }
+
     const existingBid = await BidModel.findOne({ artId, bidBy: user.user._id });
+    const additionalAmountAdded = bidAmount - existingBid?.bidAmount;
 
     if (existingBid) {
       existingBid.bidAmount = bidAmount;
       existingBid.bidAt = new Date();
       const updatedBid = await existingBid.save();
+
+      getArt.highestBid = bidAmount;
+      await getArt.save();
+
+      getWalletBallance.balance =
+        getWalletBallance.balance - additionalAmountAdded;
+      getWalletBallance.auctionBidsPlacedAmount =
+        getWalletBallance.auctionBidsPlacedAmount + additionalAmountAdded;
+
+      await getWalletBallance.save();
       return updatedBid;
     } else {
+      getWalletBallance.balance = getWalletBallance.balance - bidAmount;
+      getWalletBallance.auctionBidsPlacedAmount =
+        getWalletBallance.auctionBidsPlacedAmount + bidAmount;
+      await getWalletBallance.save();
+
+      getArt.highestBid = bidAmount;
+      await getArt.save();
+
       const newBid = new BidModel({
         bidAmount,
         artId,
