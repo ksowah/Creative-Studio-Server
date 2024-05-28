@@ -48,8 +48,12 @@ const ArtSchema = new Schema(
     },
     artState: {
       type: String,
-      enum: ["onSale", "auction", "sold", "showcase"],
+      enum: ["onSale", "auction", "showcase"],
       default: "showcase",
+    },
+    artSold: {
+      type: Boolean,
+      default: false,
     },
     price: {
       type: Number,

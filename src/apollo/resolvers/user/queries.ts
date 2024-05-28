@@ -1,4 +1,5 @@
 import Authenticate from "../../../middleware/auth";
+import { AddressModel } from "../../../models/Address";
 import { FollowModel } from "../../../models/Follow";
 import { UserModel } from "../../../models/User";
 
@@ -65,6 +66,24 @@ export async function getFollowing(_: any, { userId }) {
       data: following,
       followingCount: following.length,
     };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export const getDeliveryAddress = async (_: any, {userId}, context: any) => {
+  try {
+    Authenticate(context);
+
+    const address = await AddressModel.findOne({ user:userId });
+
+    if(!address) {
+      throw new Error("Address not found");
+    }
+
+    return address;
+
   } catch (error) {
     console.log(error);
     throw error;

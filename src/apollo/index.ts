@@ -1,4 +1,4 @@
-import { getMe, getFollowers, getFollowing, getUserByUsername } from "./resolvers/user/queries";
+import { getMe, getFollowers, getFollowing, getUserByUsername, getDeliveryAddress } from "./resolvers/user/queries";
 import {
   register,
   login,
@@ -8,6 +8,7 @@ import {
   becomePremiumUser,
   verifyUser,
   editProfile,
+  addDeliveryAddress,
 } from "./resolvers/user/mutations";
 import {
   createDesign,
@@ -35,7 +36,7 @@ import {
   searchDesigns,
   getDesignById,
 } from "./resolvers/design/queries";
-import { placeBid, updateBidAmount, updateStartPrice } from "./resolvers/auction/mutations";
+import { placeBid, updateStartPrice, expireAuction, endAuction } from "./resolvers/auction/mutations";
 import { getArtBiddings, getHighestBid, getActiveAndUpcomingAuctions } from "./resolvers/auction/queries";
 import { newComment, newLike, newCommentReply } from "./resolvers/design/subscriptions";
 import { userTypeDefs } from "./resolvers/user/typeDefs";
@@ -83,6 +84,7 @@ export const resolvers = {
     getArtById,
     getActiveAndUpcomingAuctions,
     getWalletBallance,
+    getDeliveryAddress,
   },
   Mutation: {
     register,
@@ -111,12 +113,14 @@ export const resolvers = {
     deleteArt,
     unlikeArt,
     placeBid,
-    updateBidAmount,
     updateStartPrice,
     editProfile,
     deposit,
     withdraw,
     countDesignViews,
+    expireAuction,
+    endAuction,
+    addDeliveryAddress,
   },
   Subscription: {
     newComment,

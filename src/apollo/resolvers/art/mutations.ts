@@ -1,5 +1,6 @@
 import Authenticate from "../../../middleware/auth";
 import { ArtModel } from "../../../models/Art";
+import { BidModel } from "../../../models/Bid";
 import { LikeArtModel } from "../../../models/LikeArt";
 import { UserModel } from "../../../models/User";
 
@@ -140,6 +141,11 @@ export const updateArt = async (
     if (artState === "auction"){
       if(!auctionStartPrice && !auctionStartDate && !auctionEndDate){
         throw new Error("You need to set auction start date, end date and start price")
+      }
+
+      const allBids = await BidModel.find({ artId })
+      if(allBids.length > 0){
+        throw new Error("You can't update this art!")
       }
     }
 

@@ -6,6 +6,7 @@ import { FollowModel } from "../../../models/Follow";
 import { __template } from "../../../utils/html";
 import { config } from "../../../config";
 import { WalletModel } from "../../../models/Wallet";
+import { AddressModel } from "../../../models/Address";
 
 // USER REGISTRATION
 export const register = async (
@@ -271,3 +272,42 @@ export const verifyUser = async (_: any, { userId }, context: any) => {
     throw error
   }
 };
+
+export const addDeliveryAddress = async (_: any, {addressInput:{city, street, postalCode, houseNumber, telephone}}, context: any) => {
+  try {
+    const user: any = Authenticate(context);
+
+    const addressAlreadyExist = await AddressModel.findOne({user: user.user._id})
+
+    if(!city || !street || !postalCode || !houseNumber || !telephone){
+      throw new Error("All fields are required")
+    }
+
+    // if address already exists, updates the address
+    if (addressAlreadyExist) {
+      const updatedAddress = await AddressModel.findByIdAndUpdate(
+        addressAlreadyExist._id,
+        { city, street, postalCode, houseNumber, telephone },
+        { new: true }
+      )
+
+      return updatedAddress
+    }
+
+    const address = new AddressModel({
+      user: user.user._id,
+      city,
+      street,
+      postalCode,
+      houseNumber,
+      telephone,
+    })
+
+    const newAddress = await address.save()
+
+    return newAddress;
+  } catch (error) {
+    console.log(error);
+    throw error
+  }
+}

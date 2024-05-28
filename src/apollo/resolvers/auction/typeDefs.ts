@@ -20,8 +20,9 @@ export const auctionTypeDefs = gql`
 
     type Mutation {
         placeBid(bidAmount: Float!, artId: ID!): Bid!
-        updateBidAmount(bidAmount: Float!, bidId: ID!): Bid!
         updateStartPrice(artId: ID!): ArtPiece!
+        expireAuction(artId: ID!): String!
+        endAuction(artId: ID!): String!
     }
 
     type Query {
