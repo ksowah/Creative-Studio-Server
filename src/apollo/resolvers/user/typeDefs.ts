@@ -82,6 +82,24 @@ export const userTypeDefs = gql`
     followingCount: Int!
   }
 
+  type DeliveryAddress {
+    _id: ID!
+    user: ID!
+    city: String!
+    street: String!
+    postalCode: String!
+    houseNumber: String!
+    telephone: String!
+  }
+
+  input AddressInput {
+    city: String!
+    street: String!
+    postalCode: String!
+    houseNumber: String!
+    telephone: String!
+  }
+
   input RegisterInput {
     fullName: String!
     email: String!
@@ -109,6 +127,7 @@ export const userTypeDefs = gql`
     getFollowers(userId: ID!): FollowerCount!
     getFollowing(userId: ID!): FollowingCount!
     getUserByUsername(username: String!): User!
+    getDeliveryAddress(userId: ID!): DeliveryAddress!
   }
 
   type Mutation {
@@ -120,5 +139,6 @@ export const userTypeDefs = gql`
     becomeCreator: User!
     becomePremiumUser: User!
     verifyUser(userId: ID!): User!
+    addDeliveryAddress(addressInput: AddressInput): DeliveryAddress!
   }
 `;

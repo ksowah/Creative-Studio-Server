@@ -6,6 +6,7 @@ export const walletTypeDefs = gql`
         _id: ID!
         user: ID!
         balance: Float!
+        auctionBidsPlacedAmount: Float
     }
  
  type Mutation {

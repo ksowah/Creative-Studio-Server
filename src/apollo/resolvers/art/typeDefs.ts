@@ -17,6 +17,23 @@ export const artTypeDefs = gql`
     auctionEndDate: String
   }
 
+  input ArtEditInput {
+    artId: ID!
+    title: String!
+    description: String!
+    artPreview: String!
+    previewImageRef: String!
+    artImagesRef: [String]
+    artImages: [String]
+    category: String!
+    dimensions: String!
+    price: Float
+    artState: String!
+    auctionStartPrice: Float
+    auctionStartDate: String
+    auctionEndDate: String
+  }
+
   type ArtPiece {
     _id: ID!
     title: String!
@@ -33,6 +50,8 @@ export const artTypeDefs = gql`
     auctionStartPrice: Float
     auctionStartDate: String
     auctionEndDate: String
+    highestBid: Float
+    artSold: Boolean
   }
 
   type UserArtPieces {
@@ -51,6 +70,8 @@ export const artTypeDefs = gql`
     auctionStartPrice: Float
     auctionStartDate: String
     auctionEndDate: String
+    highestBid: Float
+    artSold: Boolean
   }
 
   type LikeArt {
@@ -83,7 +104,7 @@ export const artTypeDefs = gql`
     createArt(artInput: ArtInput): ArtPiece!
     becomeArtist: User!
     likeArt(artId: ID!): LikeArt!
-    updateArt(artInput: ArtInput): ArtPiece!
+    updateArt(artInput: ArtEditInput): ArtPiece!
     deleteArt(artId: ID!): String!
     unlikeArt(artId: ID!): String!
   }

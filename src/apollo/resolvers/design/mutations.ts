@@ -114,10 +114,14 @@ export const updateDesign = async (
       designId,
       preview,
       description,
-      designFiles,
+      designFile,
+      designFileRef,
       tags,
       category,
       designSubscription,
+      designImages,
+      designImagesRef,
+      previewImageRef,
     },
   },
   context: any
@@ -149,10 +153,14 @@ export const updateDesign = async (
       {
         preview,
         description,
-        designFiles,
+        designFile,
         tags,
         category,
         designSubscription,
+        designFileRef,
+        designImages,
+        designImagesRef,
+        previewImageRef,
       },
       { new: true }
     );

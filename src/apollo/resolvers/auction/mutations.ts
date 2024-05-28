@@ -14,7 +14,9 @@ export const placeBid = async (
 
     const getArt = await ArtModel.findById(artId);
 
-    const getWalletBallance:any = await WalletModel.findOne({user: user?.user._id}).lean();
+    const getWalletBallance = await WalletModel.findOne({
+      user: user?.user._id,
+    });
 
     if (getWalletBallance?.balance < bidAmount) {
       throw new Error("Studio balance not enough to place this bid");
@@ -28,6 +30,10 @@ export const placeBid = async (
       throw new Error("Art not found");
     }
 
+    if (getArt.artSold) {
+      throw new Error("Art already sold");
+    }
+
     if (getArt.artState !== "auction") {
       throw new Error("Art not in auction");
     }
@@ -38,6 +44,35 @@ export const placeBid = async (
 
     if (getArt.auctionStartPrice >= bidAmount) {
       throw new Error("Bid amount should be greater than starting price");
+    }
+
+    if (bidAmount < getArt.highestBid) {
+      throw new Error("Bid amount should be greater than highest bid");
+    }
+
+    const allBids = await BidModel.find({ artId })
+      .sort({ bidAmount: -1 })
+      .lean();
+
+    const currentHighestBid = allBids[0];
+
+    getWalletBallance.balance = getWalletBallance.balance - bidAmount;
+    getWalletBallance.auctionBidsPlacedAmount =
+      getWalletBallance.auctionBidsPlacedAmount + bidAmount;
+    await getWalletBallance.save();
+
+    getArt.highestBid = bidAmount;
+    await getArt.save();
+
+    // return previous highest bidders money
+    if (currentHighestBid) {
+      const bidderWallet = await WalletModel.findOne({
+        user: currentHighestBid.bidBy,
+      });
+      bidderWallet.balance = bidderWallet.balance + currentHighestBid.bidAmount;
+      bidderWallet.auctionBidsPlacedAmount =
+        bidderWallet.auctionBidsPlacedAmount - currentHighestBid.bidAmount;
+      await bidderWallet.save();
     }
 
     const existingBid = await BidModel.findOne({ artId, bidBy: user.user._id });
@@ -64,45 +99,6 @@ export const placeBid = async (
   }
 };
 
-export const updateBidAmount = async (
-  _: any,
-  { bidId, bidAmount }: any,
-  context: any
-) => {
-  try {
-    const user: any = Authenticate(context);
-
-    const getBid = await BidModel.findById(bidId);
-
-    const getArt = await ArtModel.findById(getBid.artId);
-
-    if (!getBid) {
-      throw new Error("Bid not found");
-    }
-
-    if (getBid.bidBy.toString() !== user.user._id.toString()) {
-      throw new Error("You cannot update this bid because it's not yours");
-    }
-
-    if (getArt.auctionStartPrice >= bidAmount) {
-      throw new Error("Bid amount should be greater than base price");
-    }
-
-    if (getBid.bidAmount >= bidAmount) {
-      throw new Error("Bid amount should be greater than current bid");
-    }
-
-    const bid = await BidModel.findByIdAndUpdate(
-      bidId,
-      { bidAmount },
-      { new: true }
-    );
-
-    return bid;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 export const updateStartPrice = async (
   _: any,
@@ -133,5 +129,72 @@ export const updateStartPrice = async (
     return art;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const expireAuction = async (_: any, { artId }, context: any) => {
+  try {
+
+    const art = await ArtModel.findById(artId);
+
+    if (!art) {
+      throw new Error("Art not found");
+    }
+
+    if (art.artSold) {
+      throw new Error("Art already sold");
+    }
+
+    if (art.artState !== "auction") {
+      throw new Error("Art not in auction");
+    }
+
+    let currentDate = new Date();
+
+    const allBids = await BidModel.find({ artId });
+
+    if (art.auctionEndDate < currentDate && allBids.length > 0) {
+      art.artSold = true;
+      await art.save();
+    }
+
+    return "Auction expired, art is now sold";
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const endAuction = async (_: any, { artId }, context: any) => {
+  try {
+    const user: any = Authenticate(context);
+
+    const art = await ArtModel.findOne(artId, { artist: user.user._id });
+
+    if (!art) {
+      throw new Error("Art not found");
+    }
+
+    if (art.artSold) {
+      throw new Error("Art already sold");
+    }
+
+    if (art.artState !== "auction") {
+      throw new Error("Art not in auction");
+    }
+
+    const allBids = await BidModel.find({ artId });
+
+    if (allBids.length === 0) {
+      throw new Error("No bids placed on this art");
+    }
+
+    art.artSold = true;
+    await art.save();
+
+    return "Auction ended, art is now sold";
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 };

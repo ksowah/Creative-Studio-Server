@@ -137,8 +137,11 @@ input UpdateDesignInput {
     designFile: String!
     designFileRef: String!
     tags: [String]
-    category: String
-    designSubscription: String
+    category: String!
+    designSubscription: String!
+    designImages: [String]
+    designImagesRef: [String]
+    previewImageRef: String!
 }
 
 type Query {
