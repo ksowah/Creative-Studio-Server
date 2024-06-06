@@ -1,6 +1,7 @@
 import Authenticate from "../../../middleware/auth";
 import { AddressModel } from "../../../models/Address";
 import { FollowModel } from "../../../models/Follow";
+import { NotificationModel } from "../../../models/Notifications";
 import { UserModel } from "../../../models/User";
 
 export async function getMe(_: any, __: any, context: any) {
@@ -87,5 +88,17 @@ export const getDeliveryAddress = async (_: any, {userId}, context: any) => {
   } catch (error) {
     console.log(error);
     throw error;
+  }
+}
+
+export const getNotifications = async (_:any, __:any, context:any) => {
+  try {
+    const user:any = Authenticate(context)
+    const notifications = await NotificationModel.find({user:user?.user._id})
+
+    return notifications;
+  } catch (error) {
+    console.log(error)
+    throw error
   }
 }

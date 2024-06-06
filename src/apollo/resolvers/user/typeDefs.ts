@@ -92,6 +92,14 @@ export const userTypeDefs = gql`
     telephone: String!
   }
 
+  type Notification {
+    _id: ID!
+    user: ID!
+    notificationType: String!
+    summary: String!
+    artWorks: [String]
+  }
+
   input AddressInput {
     city: String!
     street: String!
@@ -128,6 +136,7 @@ export const userTypeDefs = gql`
     getFollowing(userId: ID!): FollowingCount!
     getUserByUsername(username: String!): User!
     getDeliveryAddress(userId: ID!): DeliveryAddress!
+    getNotifications: [Notification!]!
   }
 
   type Mutation {

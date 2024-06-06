@@ -16,9 +16,11 @@ export const cartTypeDefs = gql`
     type Mutation {
         addToCart(itemId: ID!, artist: ID!): Cart!
         removeFromCart(itemId: ID!): Cart!
+        confirmOrder(items: [String!]): String!
     }
 
     type Query {
         getCartItems: [CartItems!]!
+        getOrders: [UserArtPieces!]!
     }
 `;

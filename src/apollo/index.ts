@@ -1,4 +1,4 @@
-import { getMe, getFollowers, getFollowing, getUserByUsername, getDeliveryAddress } from "./resolvers/user/queries";
+import { getMe, getFollowers, getFollowing, getUserByUsername, getDeliveryAddress, getNotifications } from "./resolvers/user/queries";
 import {
   register,
   login,
@@ -43,13 +43,12 @@ import { userTypeDefs } from "./resolvers/user/typeDefs";
 import { designTypeDefs } from "./resolvers/design/typeDefs";
 import { artTypeDefs } from "./resolvers/art/typeDefs";
 import { cartTypeDefs } from "./resolvers/cart/typeDefs";
-import { addToCart, removeFromCart } from "./resolvers/cart/mutations";
-import { getCartItems } from "./resolvers/cart/queries"
+import { addToCart, removeFromCart, confirmOrder } from "./resolvers/cart/mutations";
+import { getCartItems, getOrders } from "./resolvers/cart/queries"
 import { auctionTypeDefs } from "./resolvers/auction/typeDefs";
 import { walletTypeDefs } from "./resolvers/wallet/typeDefs";
 import { getWalletBallance } from "./resolvers/wallet/queries"
 import { deposit, withdraw } from "./resolvers/wallet/mutations"
-
 
 export const typeDefs = [
   userTypeDefs,
@@ -85,6 +84,8 @@ export const resolvers = {
     getActiveAndUpcomingAuctions,
     getWalletBallance,
     getDeliveryAddress,
+    getNotifications,
+    getOrders,
   },
   Mutation: {
     register,
@@ -121,6 +122,7 @@ export const resolvers = {
     expireAuction,
     endAuction,
     addDeliveryAddress,
+    confirmOrder,
   },
   Subscription: {
     newComment,
