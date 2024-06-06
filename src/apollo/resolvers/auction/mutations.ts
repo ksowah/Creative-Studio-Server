@@ -1,6 +1,7 @@
 import Authenticate from "../../../middleware/auth";
 import { ArtModel } from "../../../models/Art";
 import { BidModel } from "../../../models/Bid";
+import { NotificationModel } from "../../../models/Notifications";
 import { WalletModel } from "../../../models/Wallet";
 
 // TO DO: NO AUCTION AFTER END DATE
@@ -90,7 +91,24 @@ export const placeBid = async (
         bidBy: user.user._id,
       });
 
+
+      const notification = new NotificationModel({
+        user: user.user._id,
+        notificationType: "bidPlaced",
+        artWorks: [artId],
+        summary: `You have successfully placed a bid on the art work "${getArt?.title}"`,
+      })
+
+      const artistNotification = new NotificationModel({
+        user: getArt?.artist,
+        notificationType: "newBid",
+        artWorks: [artId],
+        summary: `Your art work ${getArt?.title} has received a new bid`
+      })
+
       const bid = await newBid.save();
+      await notification.save();
+      await artistNotification.save();
       return bid;
     }
   } catch (error) {

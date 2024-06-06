@@ -8,6 +8,7 @@ export const auctionTypeDefs = gql`
         bidAt: String!
         bidAmount: Float!
         artId: ID!
+        notificationSummary: String
     }
 
     type UserBid {
@@ -16,6 +17,7 @@ export const auctionTypeDefs = gql`
         bidAt: String!
         bidAmount: Float!
         artId: ID!
+        notificationSummary: String
     }
 
     type Mutation {
