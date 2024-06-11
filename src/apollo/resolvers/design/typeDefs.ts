@@ -18,8 +18,8 @@ type Design {
     saves: Int!
     description: String!
     designSubscription: String!
-    designFile: String!
-    designFileRef: String!
+    designFile: String
+    designFileRef: String
     designImages: [String]
     createdAt: String!
     tags: [String!]!
@@ -27,6 +27,7 @@ type Design {
     title: String!
     previewImageRef: String!
     designImagesRef: [String]
+    designUri: String
 }
 
 
@@ -38,8 +39,8 @@ type AllDesigns {
     saves: Int!
     description: String!
     designSubscription: String!
-    designFile: String!
-    designFileRef: String!
+    designFile: String
+    designFileRef: String
     designImages: [String]
     createdAt: String!
     tags: [String!]!
@@ -47,6 +48,7 @@ type AllDesigns {
     title: String!
     previewImageRef: String!
     designImagesRef: [String]
+    designUri: String
 }
 
 type Comment {
@@ -120,28 +122,28 @@ input CreateDesignInput {
     preview: String!
     description: String!
     designSubscription: String!
-    designFile: String!
-    designFileRef: String!
     designImages: [String]
     tags: [String!]!
     category: String!
     title: String!
     designImagesRef: [String]
     previewImageRef: String!
+    designUri: String!
 }
 
 input UpdateDesignInput {
     designId: ID!
     preview: String!
     description: String!
-    designFile: String!
-    designFileRef: String!
+    designFile: String
+    designFileRef: String
     tags: [String]
     category: String!
     designSubscription: String!
     designImages: [String]
     designImagesRef: [String]
     previewImageRef: String!
+    designUri: String!
 }
 
 type Query {

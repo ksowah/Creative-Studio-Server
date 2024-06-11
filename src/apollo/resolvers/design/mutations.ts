@@ -42,8 +42,6 @@ export const createDesign = async (
     createDesignInput: {
       preview,
       description,
-      designFile,
-      designFileRef,
       tags,
       category,
       designSubscription,
@@ -51,6 +49,7 @@ export const createDesign = async (
       title,
       previewImageRef,
       designImagesRef,
+      designUri,
     },
   },
   context: any
@@ -70,7 +69,6 @@ export const createDesign = async (
     if (
       !preview ||
       !description ||
-      !designFile ||
       !category ||
       !designSubscription ||
       !title
@@ -85,9 +83,8 @@ export const createDesign = async (
     const newDesign = new DesignModel({
       designer: user.user._id,
       preview,
+      designUri,
       description,
-      designFile,
-      designFileRef,
       designImages,
       tags,
       category,
@@ -122,6 +119,7 @@ export const updateDesign = async (
       designImages,
       designImagesRef,
       previewImageRef,
+      designUri,
     },
   },
   context: any
@@ -161,6 +159,7 @@ export const updateDesign = async (
         designImages,
         designImagesRef,
         previewImageRef,
+        designUri,
       },
       { new: true }
     );
