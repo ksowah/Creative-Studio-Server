@@ -10,6 +10,10 @@ const DesignSchema = new Schema({
     type: String,
     required: true,
   },
+  designUri: {
+    type: String,
+    required: true
+  },
   previewImageRef: {
     type: String,
     required: true,
@@ -38,11 +42,9 @@ const DesignSchema = new Schema({
   },
   designFile: {
     type: String,
-    required: true,
   },
   designFileRef: {
     type: String,
-    required: true,
   },
   designImages: [{
     type:String,
