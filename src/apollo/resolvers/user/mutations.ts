@@ -7,6 +7,7 @@ import { __template } from "../../../utils/html";
 import { config } from "../../../config";
 import { WalletModel } from "../../../models/Wallet";
 import { AddressModel } from "../../../models/Address";
+import { NotificationModel } from "../../../models/Notifications";
 
 // USER REGISTRATION
 export const register = async (
@@ -164,6 +165,13 @@ export const follow = async (_: any, { followedUser }, context: any) => {
     });
 
     const followResult = await follow.save();
+
+    const artistNotification = new NotificationModel({
+      notificationType: "newFollower",
+      user: followedUser,
+      summary: `@${user.user.username} started following you`,
+    });
+    await artistNotification.save();
 
     return followResult;
   } catch (error) {
